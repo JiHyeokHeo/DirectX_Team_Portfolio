@@ -1,4 +1,4 @@
-# DirectX_Team_Portfolio (DNF Imition for Study)
+# DirectX_Team_Portfolio (DNF imitation for Study)
 ### DirectX11_Team_Portfolio 2023/05/16
 It's a project to __study collaboration__ and __creating game content.__ <br/>
 This project for __Game Copy Practice__ __*(DNF, feat.Nexon)*__ <br/>
