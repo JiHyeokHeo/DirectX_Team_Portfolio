@@ -22,7 +22,7 @@
 
 Test test;
 Test test1;
-Test test2;
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
