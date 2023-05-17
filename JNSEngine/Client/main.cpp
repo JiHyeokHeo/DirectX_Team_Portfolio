@@ -21,6 +21,7 @@
 // vulkan glsl hlsl
 
 Test test;
+Test test1;
 
 #define MAX_LOADSTRING 100
 
