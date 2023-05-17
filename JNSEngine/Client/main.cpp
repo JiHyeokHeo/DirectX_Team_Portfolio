@@ -22,6 +22,7 @@
 
 Test test;
 Test test1;
+Test test3;
 
 #define MAX_LOADSTRING 100
 
