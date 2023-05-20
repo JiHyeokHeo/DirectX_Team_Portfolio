@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{ef382c18-c456-428f-9c15-458a51343df7}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsApplication.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsEnums.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsGraphicDevice_Dx11.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsGraphics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsInput.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsMath.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JNSEngine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsResources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsTime.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsApplication.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsGraphicDevice_Dx11.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsInput.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsTime.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)jnsMath.inl" />
+  </ItemGroup>
+</Project>
