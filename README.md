@@ -18,8 +18,8 @@ This is a link to the way we studied and the direction of work. <br/>
   https://github.com/SongSeunghyeop/WinAPI_Vampire-Survivors & https://github.com/JiHyeokHeo/CrazyArcade.git 
    
 - For the code related to the math class, the following Github site was referenced.
-  http://go.microsoft.com/fwlink/?LinkId=248929
-  http://go.microsoft.com/fwlink/?LinkID=615561
+   - http://go.microsoft.com/fwlink/?LinkId=248929
+   - http://go.microsoft.com/fwlink/?LinkID=615561
 
 - Make Shader Source
 
