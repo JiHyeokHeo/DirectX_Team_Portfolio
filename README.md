@@ -25,7 +25,6 @@ This is a link to the way we studied and the direction of work. <br/>
 
 # Week 2(5/22 ~ 5/28) 
 
-- In order to prevent conflicts that occur during commit, each engine's namespace name is set differently.<br/>
-    - namespace sh / jh
+
   
   
