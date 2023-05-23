@@ -18,6 +18,9 @@ namespace jns
 
 	void Application::Run()
 	{
+		Update();
+		LateUpdate();
+		Render();
 	}
 
 	void Application::Initialize()
