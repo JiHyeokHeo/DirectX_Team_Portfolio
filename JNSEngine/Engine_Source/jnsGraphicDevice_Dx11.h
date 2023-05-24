@@ -21,13 +21,12 @@ namespace jns::graphics
 
 	private:
 		// 실제 그래픽카드 하드웨어 객체
-		Microsoft::WRL::ComPtr<ID3D11Device> mDevice; 
-		
+		Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
 
 		//  dx11에서 직접적으로 디바이스객체 접근하지않고
 		// 이객체를 이용하여 명령을 내린다.
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext> mContext; 
-		
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> mContext;
+
 		// 최종적으로 그려질 텍스처(도화지)
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> mRenderTarget;
 
@@ -44,7 +43,3 @@ namespace jns::graphics
 		Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
 	};
 }
-
-// 당신의 인생에 만족하십니까?
-// are you satisfied all your life?
-// are you haapy?
