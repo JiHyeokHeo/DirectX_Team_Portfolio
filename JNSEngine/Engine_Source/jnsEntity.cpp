@@ -4,14 +4,14 @@
 namespace jns
 {
 	Entity::Entity()
-		: mName(L"")
-		, mID((UINT64)this)
+	: mName(L"")
+	, mID((UINT64)this)
 	{
 
 	}
 
 	Entity::~Entity()
 	{
-	}
 
+	}
 }

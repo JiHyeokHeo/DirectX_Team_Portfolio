@@ -1,6 +1,5 @@
 #include "jnsApplication.h"
 
-
 namespace jns
 {
 	Application::Application()
@@ -14,6 +13,7 @@ namespace jns
 
 	Application::~Application()
 	{
+
 	}
 
 	void Application::Run()
@@ -25,21 +25,20 @@ namespace jns
 
 	void Application::Initialize()
 	{
-	}
 
+	}
 	void Application::Update()
 	{
-	}
 
+	}
 	void Application::LateUpdate()
 	{
-	}
 
+	}
 	void Application::Render()
 	{
 		graphicDevice->Draw();
 	}
-
 	void Application::SetWindow(HWND hwnd, UINT width, UINT height)
 	{
 		if (graphicDevice == nullptr)

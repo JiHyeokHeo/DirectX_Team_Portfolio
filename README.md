@@ -25,6 +25,15 @@ This is a link to the way we studied and the direction of work. <br/>
 
 # Week 2(5/22 ~ 5/28) 
 
+- DirectX11, Window Hwnd Connect (2023/05/23)
+
+- Device, Context Create (DX11) (2023/05/23)
+  - using Context to Draw Gray BackGround
+
+- SwapChain Create (DX11) (2023/05/23)
+    
+- RenderTarget, DepthStencil Buffer, View Create (2023/05/23)
+  
 
   
   
