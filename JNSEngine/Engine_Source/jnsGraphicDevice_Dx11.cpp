@@ -7,6 +7,35 @@ namespace jns::graphics
 {
 	GraphicDevice_Dx11::GraphicDevice_Dx11()
 	{
+		// Device, Context »ý¼º
+		HWND hwnd = application.GetHwnd();
+		UINT deviceFlag = D3D11_CREATE_DEVICE_DEBUG;
+		D3D_FEATURE_LEVEL featureLevel = (D3D_FEATURE_LEVEL)0;
+
+		// ID3D11Device* pDevice = nullptr;
+		// ID3D11DeviceContext* pContext = nullptr;
+		// ID3D11DeviceContext** ppContext = &pContext;
+		D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr
+		, deviceFlag, nullptr, 0
+		, D3D11_SDK_VERSION
+		, mDevice.GetAddressOf(), &featureLevel
+		, mContext.GetAddressOf());
+
+		// SwapChain
+		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
+		swapChainDesc.BufferCount = 2;
+		swapChainDesc.BufferDesc.Width = application.GetWidth();
+		swapChainDesc.BufferDesc.Height = application.GetHeight();
+
+		if (!CreateSwapChain(&swapChainDesc, hwnd))
+			return;
+
+		// Get Rendertarget by Swapchain
+		if(FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D)
+			, (void**)mRenderTarget.GetAddressOf())))
+			return;
+
+		// Create RenderTarget View
 
 		mDevice->CreateRenderTargetView((ID3D11Resource*)mRenderTarget.Get()
 			, nullptr, mRenderTargetView.GetAddressOf());
