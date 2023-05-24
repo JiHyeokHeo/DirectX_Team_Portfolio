@@ -11,7 +11,7 @@ namespace jns::graphics
 		HWND hWnd = application.GetHwnd();
 		UINT deviceFlag = D3D11_CREATE_DEVICE_DEBUG;
 		D3D_FEATURE_LEVEL featureLevel = (D3D_FEATURE_LEVEL)0;
-
+//
 		//ID3D11Device* pDevice = nullptr;
 		//ID3D11DeviceContext* pContext = nullptr;
 		//ID3D11DeviceContext** ppContext = &pContext;
