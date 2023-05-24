@@ -7,35 +7,6 @@ namespace jns::graphics
 {
 	GraphicDevice_Dx11::GraphicDevice_Dx11()
 	{
-		// Device, Context »ı¼º
-		HWND hWnd = application.GetHwnd();
-		UINT deviceFlag = D3D11_CREATE_DEVICE_DEBUG;
-		D3D_FEATURE_LEVEL featureLevel = (D3D_FEATURE_LEVEL)0;
-//
-		//ID3D11Device* pDevice = nullptr;
-		//ID3D11DeviceContext* pContext = nullptr;
-		//ID3D11DeviceContext** ppContext = &pContext;
-		D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr
-			, deviceFlag, nullptr, 0
-			, D3D11_SDK_VERSION
-			, mDevice.GetAddressOf(), &featureLevel
-			, mContext.GetAddressOf());
-
-		// SwapChain
-		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-		swapChainDesc.BufferCount = 2;
-		swapChainDesc.BufferDesc.Width = application.GetWidth();
-		swapChainDesc.BufferDesc.Height = application.GetHeight();
-
-		if (!CreateSwapChain(&swapChainDesc, hWnd))
-			return;
-
-		// get rendertarget by swapchain
-		if (FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D)
-			, (void**)mRenderTarget.GetAddressOf())))
-			return;
-
-		// create rendertarget view
 
 		mDevice->CreateRenderTargetView((ID3D11Resource*)mRenderTarget.Get()
 			, nullptr, mRenderTargetView.GetAddressOf());
@@ -61,6 +32,7 @@ namespace jns::graphics
 	{
 
 	}
+
 	bool GraphicDevice_Dx11::CreateSwapChain(const DXGI_SWAP_CHAIN_DESC* desc, HWND hWnd)
 	{
 		DXGI_SWAP_CHAIN_DESC dxgiDesc = {};
@@ -100,6 +72,7 @@ namespace jns::graphics
 
 		return true;
 	}
+
 	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
 	{
 		D3D11_TEXTURE2D_DESC dxgiDesc = {};
@@ -129,8 +102,12 @@ namespace jns::graphics
 
 	void GraphicDevice_Dx11::Draw()
 	{
-		FLOAT bgColor[4] = { 0.1f, 0.3f, 0.1f, 1.0f };
+		FLOAT bgColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		mContext->ClearRenderTargetView(mRenderTargetView.Get(), bgColor);
+
+		// 
+
 		mSwapChain->Present(0, 0);
 	}
+
 }
