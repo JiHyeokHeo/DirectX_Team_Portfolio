@@ -6,7 +6,7 @@ namespace jns
 	class Time
 	{
 	public:
-		static void Initiailize();
+		static void Initialize();
 		static void Update();
 		static void Render();
 

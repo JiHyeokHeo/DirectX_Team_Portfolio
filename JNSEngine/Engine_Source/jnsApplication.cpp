@@ -3,6 +3,7 @@
 #include "jnsTime.h"
 #include "jnsRenderer.h"
 
+
 namespace jns
 {
 	Application::Application()
@@ -28,7 +29,7 @@ namespace jns
 
 	void Application::Initialize()
 	{
-		Time::Initiailize();
+		Time::Initialize();
 		Input::Initialize();
 		Renderer::Initialize();
 	}

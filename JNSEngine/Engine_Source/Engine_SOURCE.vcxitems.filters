@@ -70,7 +70,11 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h">
+<<<<<<< HEAD
       <Filter>Graphics\Renderer</Filter>
+=======
+      <Filter>Graphics</Filter>
+>>>>>>> e8adea05dd11265b9fca6da7227bb25482bc90cd
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +103,11 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp">
+<<<<<<< HEAD
       <Filter>Graphics\Renderer</Filter>
+=======
+      <Filter>Graphics</Filter>
+>>>>>>> e8adea05dd11265b9fca6da7227bb25482bc90cd
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

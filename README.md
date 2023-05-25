@@ -34,6 +34,7 @@ This is a link to the way we studied and the direction of work. <br/>
     
 - RenderTarget, DepthStencil Buffer, View Create (2023/05/23)
   
+- Vertex Buffer Create & Vertex Shader Create (2023/05/25)
 
   
   

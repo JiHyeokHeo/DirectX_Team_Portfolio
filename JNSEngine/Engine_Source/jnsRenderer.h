@@ -12,6 +12,7 @@ namespace jns::Renderer
 		Vector4 color;
 	};
 
+
 	extern Vertex vertexes[];
 	extern ID3D11Buffer* triangleBuffer;
 	extern ID3DBlob* errorBlob;
@@ -19,6 +20,7 @@ namespace jns::Renderer
 	extern ID3D11VertexShader* triangleVSShader;
 	extern ID3DBlob* trianglePSBlob;
 	extern ID3D11PixelShader* trianglePSShader;
+
 
 	void Initialize();
 }
