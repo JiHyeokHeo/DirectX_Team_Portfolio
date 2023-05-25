@@ -2,10 +2,8 @@
 
 	//-------------------------------------------------------------------------------------
 	// SimpleMath.cpp -- Simplified C++ Math wrapper for DirectXMath
-	//
 	// Copyright (c) Microsoft Corporation.
 	// Licensed under the MIT License.
-	//
 	// http://go.microsoft.com/fwlink/?LinkId=248929
 	// http://go.microsoft.com/fwlink/?LinkID=615561
 	//-------------------------------------------------------------------------------------
@@ -48,10 +46,8 @@ namespace jns::math
 
 	const Quaternion Quaternion::Identity = { 0.f, 0.f, 0.f, 1.f };
 
-
-
 	using namespace DirectX;
-	//using namespace ya::math;
+	//using namespace jns::math;
 
 	/****************************************************************************
 	 *
