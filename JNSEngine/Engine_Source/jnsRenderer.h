@@ -2,8 +2,8 @@
 #include "JNSEngine.h"
 #include "jnsGraphicDevice_Dx11.h"
 
-
 using namespace jns::math;
+
 namespace jns::renderer
 {
 	struct Vertex

@@ -29,7 +29,7 @@
       <UniqueIdentifier>{62ccc597-e793-4dc8-bb94-8bebe3a31dcf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\Renderer">
-      <UniqueIdentifier>{3c59dfe8-1af4-4499-bea4-5d89703c3f3e}</UniqueIdentifier>
+      <UniqueIdentifier>{0e900890-53a4-49ab-a49f-ef5e855d6309}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -34,10 +34,10 @@ namespace jns::renderer
 	 void LoadBuffer()
 	 {
 		 D3D11_BUFFER_DESC triangleDesc = {};
-		 triangleDesc.Usage = D3D11_USAGE_DYNAMIC;
+		triangleDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
 		 triangleDesc.ByteWidth = sizeof(Vertex) * 3;
 		 triangleDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-		 triangleDesc.CPUAccessFlags = D3D10_CPU_ACCESS_FLAG::D3D10_CPU_ACCESS_WRITE;
+		triangleDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
 
 		 D3D11_SUBRESOURCE_DATA triangleData = {};
 		 triangleData.pSysMem = vertexes;
@@ -64,5 +64,5 @@ namespace jns::renderer
 		 LoadBuffer();
 		 LoadShader();
 	 }
-
 }
+

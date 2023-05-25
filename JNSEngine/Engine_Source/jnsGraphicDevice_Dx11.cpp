@@ -148,7 +148,6 @@ namespace jns::graphics
 
 		return true;
 	}
-
 	bool GraphicDevice_Dx11::CreateBuffer(ID3D11Buffer** buffer, D3D11_BUFFER_DESC* desc, D3D11_SUBRESOURCE_DATA* data)
 	{
 		//D3D11_BUFFER_DESC triangleDesc = {};
@@ -165,12 +164,11 @@ namespace jns::graphics
 
 		return true;
 	}
-
 	bool GraphicDevice_Dx11::CreateShader()
 	{	
 		std::filesystem::path shaderPath
 			= std::filesystem::current_path().parent_path();
-		shaderPath += L"\\Shader_Source\\";
+		shaderPath += L"\\Shader_SOURCE\\";
 
 		std::filesystem::path vsPath(shaderPath.c_str());
 		vsPath += L"TriangleVS.hlsl";
@@ -232,7 +230,6 @@ namespace jns::graphics
 
 		return true;
 	}
-
 	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
 	{
 		D3D11_TEXTURE2D_DESC dxgiDesc = {};
@@ -306,5 +303,4 @@ namespace jns::graphics
 		// 렌더타겟에 있는 이미지를 화면에 그려준다
 		mSwapChain->Present(0, 0);
 	}
-
 }
