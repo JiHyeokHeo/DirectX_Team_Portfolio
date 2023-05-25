@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor_Source", "Editor_SOU
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JNSEngine", "JNSEngine\JNSEngine.vcxproj", "{75E637F6-8E03-4459-B01B-0EDC06F8761F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine_Source", "Engine_SOURCE\Engine_SOURCE.vcxitems", "{EF382C18-C456-428F-9C15-458A51343DF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,5 +53,6 @@ Global
 		Editor_SOURCE\Editor_SOURCE.vcxitems*{6ad69225-aa0a-4e8b-8eba-6a6828faaf36}*SharedItemsImports = 9
 		Engine_SOURCE\Engine_SOURCE.vcxitems*{75e637f6-8e03-4459-b01b-0edc06f8761f}*SharedItemsImports = 4
 		Shader_SOURCE\Shader_SOURCE.vcxitems*{e34be228-3d9f-4d78-8cbd-602e8c4c82a2}*SharedItemsImports = 9
+		Engine_SOURCE\Engine_SOURCE.vcxitems*{ef382c18-c456-428f-9c15-458a51343df7}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
