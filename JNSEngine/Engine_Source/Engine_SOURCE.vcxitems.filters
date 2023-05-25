@@ -101,7 +101,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp">
       <Filter>Graphics\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)jnsMath.inl">
