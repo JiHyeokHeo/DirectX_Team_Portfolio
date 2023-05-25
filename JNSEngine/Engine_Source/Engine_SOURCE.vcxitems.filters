@@ -69,11 +69,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsGraphicDevice_Dx11.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h">
       <Filter>Graphics\Renderer</Filter>
-      <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp">
@@ -103,6 +103,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp">
       <Filter>Graphics\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp" />

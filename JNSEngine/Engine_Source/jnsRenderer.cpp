@@ -1,9 +1,8 @@
 #include "jnsRenderer.h"
 
-namespace jns::Renderer
+namespace jns::renderer
 {
 	 Vertex vertexes[3];
-
 
 	 // Vertex Buffer
 	 ID3D11Buffer* triangleBuffer = nullptr;

@@ -138,17 +138,17 @@ namespace jns::graphics
 		vsPath += L"TriangleVS.hlsl";
 
 		D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-			, "main", "vs_5_0", 0, 0, &jns::Renderer::triangleVSBlob, &jns::Renderer::errorBlob);
+			, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
 
-		if (jns::Renderer::errorBlob)
+		if (jns::renderer::errorBlob)
 		{
-			OutputDebugStringA((char*)jns::Renderer::errorBlob->GetBufferPointer());
-			jns::Renderer::errorBlob->Release();
+			OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
+			jns::renderer::errorBlob->Release();
 		}
 
-		mDevice->CreateVertexShader(jns::Renderer::triangleVSBlob->GetBufferPointer()
-			, jns::Renderer::triangleVSBlob->GetBufferSize()
-			, nullptr, &jns::Renderer::triangleVSShader);
+		mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
+			, jns::renderer::triangleVSBlob->GetBufferSize()
+			, nullptr, &jns::renderer::triangleVSShader);
 
 		return true;
 	}
