@@ -28,6 +28,9 @@
     <Filter Include="Resource\Resources">
       <UniqueIdentifier>{62ccc597-e793-4dc8-bb94-8bebe3a31dcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Renderer">
+      <UniqueIdentifier>{0e900890-53a4-49ab-a49f-ef5e855d6309}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsGraphicDevice_Dx11.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h">
+      <Filter>Graphics\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp">
@@ -91,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsGraphicDevice_Dx11.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp">
+      <Filter>Graphics\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

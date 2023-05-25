@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Pixel Shader">
+      <UniqueIdentifier>{8b1ad76b-5b8c-4289-bba8-66b5a8652e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vertax Shader">
+      <UniqueIdentifier>{ff099cc2-7e8a-4dce-b0f9-557734c15a3e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)TriangleVS.hlsl">
+      <Filter>Vertax Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

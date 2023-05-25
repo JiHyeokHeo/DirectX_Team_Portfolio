@@ -1,5 +1,6 @@
 #include "jnsGraphicDevice_Dx11.h"
 #include "jnsApplication.h"
+#include "jnsRenderer.h"
 
 extern jns::Application application;
 
@@ -101,7 +102,56 @@ namespace jns::graphics
 
 		return true;
 	}
+	bool GraphicDevice_Dx11::CreateBuffer(ID3D11Buffer** buffer, D3D11_BUFFER_DESC* desc, D3D11_SUBRESOURCE_DATA* data)
+	{
+		//D3D11_BUFFER_DESC triangleDesc = {};
+		//triangleDesc.ByteWidth = desc->ByteWidth;
+		//triangleDesc.BindFlags = desc->BindFlags;
+		//triangleDesc.CPUAccessFlags = desc->CPUAccessFlags;
 
+
+		/*D3D11_SUBRESOURCE_DATA triangleData = {};
+		triangleData.pSysMem = vertexes;*/
+
+		if (FAILED(mDevice->CreateBuffer(desc, data, buffer)))
+			return false;
+
+		return true;
+	}
+	bool GraphicDevice_Dx11::CreateShader()
+	{
+		///* [annotation] */
+		//_In_reads_(BytecodeLength)  const void* pShaderBytecode,
+		//	/* [annotation] */
+		//	_In_  SIZE_T BytecodeLength,
+		//	/* [annotation] */
+		//	_In_opt_  ID3D11ClassLinkage* pClassLinkage,
+		//	/* [annotation] */
+		//	_COM_Outptr_opt_  ID3D11VertexShader** ppVertexShader
+
+		ID3DBlob* vsBlob = nullptr;
+		std::filesystem::path shaderPath
+			= std::filesystem::current_path().parent_path();
+		shaderPath += L"\\Shader_SOURCE\\";
+
+		std::filesystem::path vsPath(shaderPath.c_str());
+		vsPath += L"TriangleVS.hlsl";
+
+		D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+			, "main", "vs_5_0", 0, 0, &jns::Renderer::triangleVSBlob, &jns::Renderer::errorBlob);
+
+		if (jns::Renderer::errorBlob)
+		{
+			OutputDebugStringA((char*)jns::Renderer::errorBlob->GetBufferPointer());
+			jns::Renderer::errorBlob->Release();
+		}
+
+		mDevice->CreateVertexShader(jns::Renderer::triangleVSBlob->GetBufferPointer()
+			, jns::Renderer::triangleVSBlob->GetBufferSize()
+			, nullptr, &jns::Renderer::triangleVSShader);
+
+		return true;
+	}
 	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
 	{
 		D3D11_TEXTURE2D_DESC dxgiDesc = {};
@@ -138,5 +188,4 @@ namespace jns::graphics
 
 		mSwapChain->Present(0, 0);
 	}
-
 }
