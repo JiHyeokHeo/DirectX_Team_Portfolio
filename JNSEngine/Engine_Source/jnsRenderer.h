@@ -2,9 +2,9 @@
 #include "JNSEngine.h"
 #include "jnsGraphicDevice_Dx11.h"
 
-
 using namespace jns::math;
-namespace jns::renderer
+
+namespace jns::Renderer
 {
 	struct Vertex
 	{
@@ -18,7 +18,7 @@ namespace jns::renderer
 	extern ID3DBlob* errorBlob;
 	extern ID3DBlob* triangleVSBlob;
 	extern ID3D11VertexShader* triangleVSShader;
-	extern ID3DBlob* tranglePSBlob;
+	extern ID3DBlob* trianglePSBlob;
 	extern ID3D11PixelShader* trianglePSShader;
 
 

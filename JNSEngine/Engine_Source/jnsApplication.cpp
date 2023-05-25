@@ -31,8 +31,7 @@ namespace jns
 	{
 		Time::Initialize();
 		Input::Initialize();
-
-		renderer::Initialize();
+		Renderer::Initialize();
 	}
 	void Application::Update()
 	{
