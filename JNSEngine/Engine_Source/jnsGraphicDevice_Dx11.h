@@ -20,6 +20,9 @@ namespace jns::graphics
 		bool CreateShader();
 		
 		bool CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data);
+
+		void BindViewPort(D3D11_VIEWPORT* viewPort);
+
 		void Draw();
 
 	private:
@@ -45,7 +48,7 @@ namespace jns::graphics
 		// 더블버퍼링 작업을 진행해주는 swapChain
 		Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
 
-
+		D3D11_VIEWPORT mViewPort;
 	};
 
 	// 싱글턴 패턴과 유사하다.
