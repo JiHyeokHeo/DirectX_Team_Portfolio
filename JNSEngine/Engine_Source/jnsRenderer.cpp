@@ -4,23 +4,17 @@
 
 namespace jns::renderer
 {
-
-	void RotateVector2(float& x, float& y, float angle)
+	inline static void Rotate(float& x, float& y , float degree)
 	{
-		// Convert the angle to radians
-		angle = angle * PI / 180.0f;
+		float radian = (degree / 180.0f) * PI;   // 1라디안은 57.3돈가? 그정도임 즉 코사인과 사인 세타값을 구하기 위해서는 라디안의 개념을 사용해야하고
+		Vector2(x,y).Normalize();						// Normalize는 결국 1, 1로 만들어 준것이고.
 
-		// Calculate trigonometric values
-		float cosAngle = std::cos(angle);
-		float sinAngle = std::sin(angle);
-
-		// Apply the rotation formula
-		float newX = x * cosAngle - y * sinAngle;
-		float newY = x * sinAngle + y * cosAngle;
-
-		// Update the original vector with the rotated values
-		x = newX;
-		y = newY;
+		float t = x * cosf(radian) - y * sinf(radian); // 이것이 바로 강사 선생님이 주신 삼각함수를 활용한 벡터의 회전이다. x좌표는 x코사인세타 - y사인세타
+		float z = x * sinf(radian) + y * cosf(radian); // 
+		//atan
+		//atan();
+		x = t;
+		y = z;
 	}
 
 	 Quaternion targetQuaternion;
@@ -111,31 +105,31 @@ namespace jns::renderer
 		 vertexes[11].pos = Vector3(0.2f, 0.5f, 0.5f);
 		 vertexes[11].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-		 float start_x =  0.5f;
-		 float start_y =  0.0f;
-		 float angle = 10.0f;
+		 float start_x =  0.0f;
+		 float start_y =  0.5f;
+		 float angle = - 10.0f;
 		 float center_x = 0.0f;
 		 float center_y = 0.0f;
 
 
 		 Vector2 turnPos = Vector2(start_x, start_y);
-		/* for (int i = 12; i < 48;)
-		 {*/
-			 vertexes[12].pos = Vector3(center_x, center_y, 0.5f);
-			 vertexes[12].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		 for (int i = 12; i < 255;)
+		 {
+			 vertexes[i].pos = Vector3(center_x, center_y, 0.5f);
+			 vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-		/*	 i++;*/
-			 vertexes[13].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
-			 vertexes[13].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+			 i++;
+			 vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
+			 vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-			 RotateVector2(turnPos.x, turnPos.y, angle);
+			 Rotate(turnPos.x, turnPos.y, angle);
 
-			 //i++;
-			 vertexes[14].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
-			 vertexes[14].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+			 i++;
+			 vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
+			 vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-			 /*i++;*/
-		 /*}*/
+			 i++;
+		 }
 
 
 		 SetupState();
