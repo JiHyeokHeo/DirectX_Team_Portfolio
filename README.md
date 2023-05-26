@@ -36,5 +36,6 @@ This is a link to the way we studied and the direction of work. <br/>
   
 - Vertex Buffer Create & Vertex Shader Create (2023/05/25)
 
+- Tried to render a triangle (2023/05/26)
   
   
