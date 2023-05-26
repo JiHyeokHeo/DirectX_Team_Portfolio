@@ -226,8 +226,6 @@ namespace jns::graphics
 			, &renderer::triangleLayout);
 
 
-
-
 		return true;
 	}
 	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
