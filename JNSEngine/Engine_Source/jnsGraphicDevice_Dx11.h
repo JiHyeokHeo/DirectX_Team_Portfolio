@@ -54,6 +54,7 @@ namespace jns::graphics
 	// 싱글턴 패턴과 유사하다.
 	inline GraphicDevice_Dx11*& GetDevice()
 	{
+		//그래픽스 디바이스의 포인터 반환 
 		static GraphicDevice_Dx11* device = nullptr;
 		return device;
 	}
