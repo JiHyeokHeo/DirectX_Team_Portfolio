@@ -166,6 +166,7 @@ namespace jns::graphics
 	}
 	bool GraphicDevice_Dx11::CreateShader()
 	{	
+		//shaderPath는 프로그램이 실행되는 경로, 쉐이더 소스의 위치로 지정
 		std::filesystem::path shaderPath
 			= std::filesystem::current_path().parent_path();
 		shaderPath += L"\\Shader_SOURCE\\";
@@ -173,6 +174,7 @@ namespace jns::graphics
 		std::filesystem::path vsPath(shaderPath.c_str());
 		vsPath += L"TriangleVS.hlsl";
 
+		//지정한 위치, TriangleVS 코드를 컴파일해서 정점 쉐이더 코드를 생성하고 그 결과를 triangleVSBlob에 저장
 		D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
 			, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
 
@@ -182,6 +184,8 @@ namespace jns::graphics
 			jns::renderer::errorBlob->Release();
 		}
 
+		//우리가 만든 쉐이더 코드를 triangleVSBlob에 저장하고 CreateVertexShader함수로
+		//실제 쉐이더 객체를 만들어서 triangleVSShader에 저장
 		mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
 			, jns::renderer::triangleVSBlob->GetBufferSize()
 			, nullptr, &jns::renderer::triangleVSShader);
@@ -198,6 +202,7 @@ namespace jns::graphics
 			jns::renderer::errorBlob->Release();
 		}
 
+		//
 		mDevice->CreatePixelShader(jns::renderer::trianglePSBlob->GetBufferPointer()
 			, jns::renderer::trianglePSBlob->GetBufferSize()
 			, nullptr, &jns::renderer::trianglePSShader);
@@ -224,7 +229,6 @@ namespace jns::graphics
 			, renderer::triangleVSBlob->GetBufferPointer()
 			, renderer::triangleVSBlob->GetBufferSize()
 			, &renderer::triangleLayout);
-
 
 		return true;
 	}
@@ -286,17 +290,20 @@ namespace jns::graphics
 		UINT vertexsize = sizeof(renderer::Vertex);
 		UINT offset = 0;
 
+		//입력 어셈블러에 정점 버퍼, 입력 레이아웃 등을 설정
 		mContext->IASetVertexBuffers(0, 1, &renderer::triangleBuffer, &vertexsize, &offset);
 		mContext->IASetInputLayout(renderer::triangleLayout);
 		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//Bind VS, PS 
 
+		//그래픽 디바이스에 이전에 만든 버텍스셰이더, 픽셀셰이더 객체를 바인딩(연결)
 		mContext->VSSetShader(renderer::triangleVSShader, 0, 0);
 		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);
 
 		// Draw Render Target
-		mContext->Draw(3, 0);
+		//6개의 정점, 그리기 시작할 인덱스는 0번
+		mContext->Draw(6, 0);
 
 		// 렌더타겟에 있는 이미지를 화면에 그려준다
 		mSwapChain->Present(0, 0);
