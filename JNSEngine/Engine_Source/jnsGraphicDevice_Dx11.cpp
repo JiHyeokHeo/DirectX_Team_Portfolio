@@ -293,6 +293,7 @@ namespace jns::graphics
 		//입력 어셈블러에 정점 버퍼, 입력 레이아웃 등을 설정
 		mContext->IASetVertexBuffers(0, 1, &renderer::triangleBuffer, &vertexsize, &offset);
 		mContext->IASetInputLayout(renderer::triangleLayout);
+		//그리는 방식
 		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//Bind VS, PS 
@@ -302,8 +303,8 @@ namespace jns::graphics
 		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);
 
 		// Draw Render Target
-		//6개의 정점, 그리기 시작할 인덱스는 0번
-		mContext->Draw(6, 0);
+		//9개의 정점, 그리기 시작할 인덱스는 0번
+		mContext->Draw(9, 0);
 
 		// 렌더타겟에 있는 이미지를 화면에 그려준다
 		mSwapChain->Present(0, 0);

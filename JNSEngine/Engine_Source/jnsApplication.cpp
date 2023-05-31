@@ -3,7 +3,6 @@
 #include "jnsTime.h"
 #include "jnsRenderer.h"
 
-
 namespace jns
 {
 	Application::Application()
@@ -67,5 +66,4 @@ namespace jns
 		ShowWindow(mHwnd, true);
 		UpdateWindow(mHwnd);
 	}
-
 }
