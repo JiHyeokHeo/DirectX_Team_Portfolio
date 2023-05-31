@@ -14,6 +14,7 @@ namespace jns::renderer
 
 
 	extern Vertex vertexes[];
+
 	extern ID3D11InputLayout* triangleLayout; // 입력 어셈블러 단계 // 정점 데이터를 올바르게 해석하기 위함
 	extern ID3D11Buffer* triangleBuffer; // 정점 데이터를 저장하기 위한 버퍼 객체
 	extern ID3DBlob* errorBlob;

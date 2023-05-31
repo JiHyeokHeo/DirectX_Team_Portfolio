@@ -2,7 +2,7 @@
 
 namespace jns::renderer
 {
-	 Vertex vertexes[6] = {};
+	 Vertex vertexes[9] = {};
 
 	 //초기화되지 않은 객체를 사용하게 되면 오류가 발생하므로 우선  nullptr 값으로 채워둔다
 	 // Input Layout (정점 정보)
@@ -40,7 +40,7 @@ namespace jns::renderer
 		triangleDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
 
 		//버퍼의 크기 지정
-		triangleDesc.ByteWidth = sizeof(Vertex) * 6;
+		triangleDesc.ByteWidth = sizeof(Vertex) * 9;
 		
 		//바인드 플래그를 정점 버퍼로 지정
 		//바인드 플래그란? 버퍼가 어떤 용도로 사용될 지 지정하는 역할 (인덱스 버퍼 or 정점 버퍼)
@@ -65,6 +65,7 @@ namespace jns::renderer
 
 	 void Initialize()
 	 {
+		 //시계 방향으로 그려주어야 한다.
 		 vertexes[0].pos = Vector3(-0.5f, 0.8f, 0.5f);
 		 vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -82,6 +83,15 @@ namespace jns::renderer
 
 		 vertexes[5].pos = Vector3(-0.5f, 0.0f, 0.5f);
 		 vertexes[5].color = Vector4(0.5f, 0.5f, 2.0f, 1.0f);
+		 //
+		 vertexes[6].pos = Vector3(0.5f, 0.0f, 0.5f);
+		 vertexes[6].color = Vector4(0.7f, 0.2f, 0.6f, 1.0f);
+
+		 vertexes[7].pos = Vector3(0.7f, -0.4f, 0.5f);
+		 vertexes[7].color = Vector4(0.3f, 0.5f, 0.2f, 1.0f);
+
+		 vertexes[8].pos = Vector3(0.3f, -0.4f, 0.5f);
+		 vertexes[8].color = Vector4(0.1f, 0.4f, 0.8f, 1.0f);
 
 		 SetupState();
 		 LoadBuffer();
