@@ -38,6 +38,7 @@ namespace jns
 		//int a = 0;
 		Time::Update();
 		Input::Update();
+		renderer::Update();
 	}
 	void Application::LateUpdate()
 	{
