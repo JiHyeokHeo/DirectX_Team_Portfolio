@@ -38,4 +38,7 @@ This is a link to the way we studied and the direction of work. <br/>
 
 - Tried to render a triangle (2023/05/26)
   
+  # Week 2(5/29 ~ 6/4) 
+
+- Move the shape by pressing the arrow keys
   
