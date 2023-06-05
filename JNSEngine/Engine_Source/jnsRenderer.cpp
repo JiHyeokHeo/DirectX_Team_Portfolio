@@ -2,48 +2,41 @@
 #include "jnsMath.h"
 #include "jnsInput.h"
 #include "jnsTime.h"
-#define PI 3.141592
+
 
 namespace jns::renderer
 {
-	//static void Rotate(float& x, float& y , float degree)
-	//{
-	//	float radian = (degree / 180.0f) * PI;  
-	//	Vector2(x,y).Normalize();						
+	Vertex vertexes[4] = {};
 
-	//	float t = x * cosf(radian) - y * sinf(radian); 
-	//	float z = x * sinf(radian) + y * cosf(radian);
-	//	
-	//	x = t;
-	//	y = z;
-	//}
 
-	 Quaternion targetQuaternion;
-	 Quaternion resultQuaternion;
 
-	 Vertex vertexes[256] = {};
-	 // Input Layout (정점 정보)
-	 ID3D11InputLayout* triangleLayout = nullptr;
+	// Input Layout (정점 정보)
+	ID3D11InputLayout* triangleLayout = nullptr;
 
-	 // Vertex Buffer
-	 ID3D11Buffer* triangleBuffer = nullptr;
-	 ID3D11Buffer* triangleIdxBuffer = nullptr;
-	 ID3D11Buffer* triangleConstantBuffer = nullptr;
+	// Vertex Buffer
+	jns::Mesh* mesh = nullptr;
+	
+	//ID3D11Buffer* triangleBuffer = nullptr;
+	//ID3D11Buffer* triangleIdxBuffer = nullptr;
 
-	 // error blob
-	 ID3DBlob* errorBlob = nullptr;
-	 
-	 // Vertex Shader Code -> Binary Code 
-	 ID3DBlob* triangleVSBlob = nullptr;
+	ID3D11Buffer* triangleConstantBuffer = nullptr;
 
-	 // Vertex Shader
-	 ID3D11VertexShader* triangleVSShader = nullptr;
-	 
-	 // Pixel Shader Code -> Binary Code
-	 ID3DBlob* trianglePSBlob = nullptr;
 
-	 // Vertex Shader
-	 ID3D11PixelShader* trianglePSShader = nullptr;
+	jns::Shader* shader = nullptr;
+	//// error blob
+	//ID3DBlob* errorBlob = nullptr;
+
+	//// Vertex Shader code -> Binary Code
+	//ID3DBlob* triangleVSBlob = nullptr;
+
+	//// Vertex Shader
+	//ID3D11VertexShader* triangleVSShader = nullptr;
+
+	//// Pixel Shader code -> Binary Code
+	//ID3DBlob* trianglePSBlob = nullptr;
+
+	// Vertex Shader
+	ID3D11PixelShader* trianglePSShader = nullptr;
 
 
 	 void SetupState()
@@ -54,32 +47,18 @@ namespace jns::renderer
 	 void LoadBuffer()
 	 {
 		 // Vertex Buffer
-		 D3D11_BUFFER_DESC triangleDesc = {};
-		triangleDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
-		 triangleDesc.ByteWidth = sizeof(Vertex) * 256;
-		 triangleDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-		triangleDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
-
-		 D3D11_SUBRESOURCE_DATA triangleData = {};
-		 triangleData.pSysMem = vertexes;
-		 jns::graphics::GetDevice()->CreateBuffer(&triangleBuffer, &triangleDesc, &triangleData);
+		 mesh = new jns::Mesh();
+		 mesh->CreateVertexBuffer(vertexes, 4);
 
 		 std::vector<UINT> indexes = {};
 		 indexes.push_back(0);
 		 indexes.push_back(1);
 		 indexes.push_back(2);
 
-
-		 // Index Buffer
-		 D3D11_BUFFER_DESC triangleIdxDesc = {};
-		 triangleIdxDesc.ByteWidth = sizeof(UINT) * indexes.size();
-		 triangleIdxDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
-		 triangleIdxDesc.Usage = D3D11_USAGE_DEFAULT;
-		 triangleIdxDesc.CPUAccessFlags = 0;
-
-		 D3D11_SUBRESOURCE_DATA triangleIdxData = {};
-		 triangleIdxData.pSysMem = indexes.data();
-		 jns::graphics::GetDevice()->CreateBuffer(&triangleIdxBuffer, &triangleIdxDesc, &triangleIdxData);
+		 indexes.push_back(0);
+		 indexes.push_back(2);
+		 indexes.push_back(3);
+		 mesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		 // Constant Buffer
 		 D3D11_BUFFER_DESC triangleCSDesc = {};
@@ -88,17 +67,21 @@ namespace jns::renderer
 		 triangleCSDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
 		 triangleCSDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		 jns:graphics::GetDevice()->CreateBuffer(&triangleConstantBuffer, &triangleCSDesc, nullptr);
+		 jns::graphics::GetDevice()->CreateBuffer(&triangleConstantBuffer, &triangleCSDesc, nullptr);
 
-		 
-		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &mTrianglePos, sizeof(Vector4));
+		 Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
+		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &pos, sizeof(Vector4));
 		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
 		 //
 	 }
 
 	 void LoadShader()
 	 {
-		 jns::graphics::GetDevice()->CreateShader();
+		 //jns::graphics::GetDevice()->CreateShader();
+
+		 shader = new jns::Shader();
+		 shader->Create(eShaderStage::VS, L"TriangleVS.hlsl", "main");
+		 shader->Create(eShaderStage::PS, L"TrianglePS.hlsl", "main");
 	 }
 
 	 void Initialize()
@@ -173,6 +156,18 @@ namespace jns::renderer
 		 LoadShader();
 	 }
 
+	 void Release()
+	 {
+		 if (triangleLayout != nullptr)
+			 triangleLayout->Release();
+
+		 if (triangleConstantBuffer != nullptr)
+			 triangleConstantBuffer->Release();
+
+		 if (trianglePSShader != nullptr)
+			 trianglePSShader->Release();
+	 }
+
 	 void Update()
 	 {
 		 
@@ -183,6 +178,14 @@ namespace jns::renderer
 		 else if (Input::GetKey(eKeyCode::RIGHT))
 		 {
 			 mTrianglePos.x += 0.1f * Time::DeltaTime();
+		 }
+		 else if (Input::GetKey(eKeyCode::DOWN))
+		 {
+			 mTrianglePos.y -= 0.1f * Time::DeltaTime();
+		 }
+		 else if (Input::GetKey(eKeyCode::UP))
+		 {
+			 mTrianglePos.y += 0.1f * Time::DeltaTime();
 		 }
 		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &mTrianglePos, sizeof(Vector4));
 		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);

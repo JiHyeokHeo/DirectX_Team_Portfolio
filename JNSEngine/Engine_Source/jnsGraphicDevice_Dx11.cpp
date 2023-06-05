@@ -157,68 +157,100 @@ namespace jns::graphics
 	}
 	bool GraphicDevice_Dx11::CreateShader()
 	{	
-		std::filesystem::path shaderPath
-			= std::filesystem::current_path().parent_path();
-		shaderPath += L"\\Shader_SOURCE\\";
+		//std::filesystem::path shaderPath
+		//	= std::filesystem::current_path().parent_path();
+		//shaderPath += L"\\Shader_SOURCE\\";
+		//std::filesystem::path vsPath(shaderPath.c_str());
+		//vsPath += L"TriangleVS.hlsl";
 
-		std::filesystem::path vsPath(shaderPath.c_str());
-		vsPath += L"TriangleVS.hlsl";
+		//D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		//	, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
 
-		D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-			, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
+		//if (jns::renderer::errorBlob)
+		//{
+		//	OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
+		//	jns::renderer::errorBlob->Release();
+		//}
 
-		if (jns::renderer::errorBlob)
+		//mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
+		//	, jns::renderer::triangleVSBlob->GetBufferSize()
+		//	, nullptr, &jns::renderer::triangleVSShader);
+
+		//std::filesystem::path psPath(shaderPath.c_str());
+		//psPath += L"TrianglePS.hlsl";
+
+		//D3DCompileFromFile(psPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		//	, "main", "ps_5_0", 0, 0, &jns::renderer::trianglePSBlob, &jns::renderer::errorBlob);
+
+		//if (jns::renderer::errorBlob)
+		//{
+		//	OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
+		//	jns::renderer::errorBlob->Release();
+		//}
+
+		//mDevice->CreatePixelShader(jns::renderer::trianglePSBlob->GetBufferPointer()
+		//	, jns::renderer::trianglePSBlob->GetBufferSize()
+		//	, nullptr, &jns::renderer::trianglePSShader);
+
+
+		//// Input layout 정점 구조 정보를 넘겨줘야한다.
+		//D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
+
+		//arrLayout[0].AlignedByteOffset = 0;
+		//arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		//arrLayout[0].InputSlot = 0;
+		//arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		//arrLayout[0].SemanticName = "POSITION";
+		//arrLayout[0].SemanticIndex = 0;
+
+		//arrLayout[1].AlignedByteOffset = 12;
+		//arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		//arrLayout[1].InputSlot = 0;
+		//arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		//arrLayout[1].SemanticName = "COLOR";
+		//arrLayout[1].SemanticIndex = 0;
+
+		//mDevice->CreateInputLayout(arrLayout, 2
+		//	, renderer::triangleVSBlob->GetBufferPointer()
+		//	, renderer::triangleVSBlob->GetBufferSize()
+		//	, &renderer::triangleLayout);
+
+
+
+
+		return true;
+	}
+	bool GraphicDevice_Dx11::CompileFromfile(const std::wstring& fileName, const std::string& funcName, const std::string& version, ID3DBlob** ppCode)
+	{
+		ID3DBlob* errorBlob = nullptr;
+		D3DCompileFromFile(fileName.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+			, funcName.c_str(), version.c_str(), 0, 0, ppCode, &errorBlob);
+
+		if (errorBlob)
 		{
-			OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
-			jns::renderer::errorBlob->Release();
+			OutputDebugStringA((char*)(errorBlob->GetBufferPointer()));
+			errorBlob->Release();
+			errorBlob = nullptr;
 		}
+		
+		return false;
+	}
+	bool GraphicDevice_Dx11::CreateVertexShader(const void* pShaderByteCode
+		, SIZE_T BytecodeLength
+		, ID3D11VertexShader** ppVertexShader)
+	{
+		if (FAILED(mDevice->CreateVertexShader(pShaderByteCode, BytecodeLength, nullptr, ppVertexShader)))
+			return false;
 
-		mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
-			, jns::renderer::triangleVSBlob->GetBufferSize()
-			, nullptr, &jns::renderer::triangleVSShader);
-
-		std::filesystem::path psPath(shaderPath.c_str());
-		psPath += L"TrianglePS.hlsl";
-
-		D3DCompileFromFile(psPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-			, "main", "ps_5_0", 0, 0, &jns::renderer::trianglePSBlob, &jns::renderer::errorBlob);
-
-		if (jns::renderer::errorBlob)
-		{
-			OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
-			jns::renderer::errorBlob->Release();
-		}
-
-		mDevice->CreatePixelShader(jns::renderer::trianglePSBlob->GetBufferPointer()
-			, jns::renderer::trianglePSBlob->GetBufferSize()
-			, nullptr, &jns::renderer::trianglePSShader);
-
-
-		// Input layout 정점 구조 정보를 넘겨줘야한다.
-		D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
-
-		arrLayout[0].AlignedByteOffset = 0;
-		arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		arrLayout[0].InputSlot = 0;
-		arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		arrLayout[0].SemanticName = "POSITION";
-		arrLayout[0].SemanticIndex = 0;
-
-		arrLayout[1].AlignedByteOffset = 12;
-		arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		arrLayout[1].InputSlot = 0;
-		arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		arrLayout[1].SemanticName = "COLOR";
-		arrLayout[1].SemanticIndex = 0;
-
-		mDevice->CreateInputLayout(arrLayout, 2
-			, renderer::triangleVSBlob->GetBufferPointer()
-			, renderer::triangleVSBlob->GetBufferSize()
-			, &renderer::triangleLayout);
-
-
-
-
+		return true;
+	}
+	bool GraphicDevice_Dx11::CreatePixelShader(const void* pPixelByteCode
+		, SIZE_T BytecodeLength
+		, ID3D11PixelShader** ppPixelShader)
+	{
+		if (FAILED(mDevice->CreatePixelShader(pPixelByteCode, BytecodeLength, nullptr, ppPixelShader)))
+			return false;
+		
 		return true;
 	}
 	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
@@ -251,6 +283,26 @@ namespace jns::graphics
 	void GraphicDevice_Dx11::BindViewPort(D3D11_VIEWPORT* viewPort)
 	{
 		mContext->RSSetViewports(1, viewPort);
+	}
+
+	void GraphicDevice_Dx11::BindVertexBuffer(UINT StartSlot, ID3D11Buffer* const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets)
+	{
+		mContext->IASetVertexBuffers(StartSlot, 1, ppVertexBuffers, pStrides, pOffsets);
+	}
+
+	void GraphicDevice_Dx11::BindIndexBuffer(ID3D11Buffer* pIndexBuffer, DXGI_FORMAT Format, UINT Offset)
+	{
+		mContext->IASetIndexBuffer(pIndexBuffer, Format, Offset);
+	}
+
+	void GraphicDevice_Dx11::BindVertexShader(ID3D11VertexShader* pVertexShader)
+	{
+		mContext->VSSetShader(pVertexShader, 0, 0);
+	}
+
+	void GraphicDevice_Dx11::BindPixelShader(ID3D11PixelShader* pPixelShader)
+	{
+		mContext->PSSetShader(pPixelShader, 0, 0);
 	}
 
 	void GraphicDevice_Dx11::SetConstantBuffer(ID3D11Buffer* buffer, void* data, UINT size)
@@ -323,20 +375,13 @@ namespace jns::graphics
 		BindViewPort(&mViewPort);
 		mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
-		// input assembler 정점데이터 정보 지정
-		UINT vertexsize = sizeof(renderer::Vertex);
-		UINT offset = 0;
-
-		mContext->IASetVertexBuffers(0, 1, &renderer::triangleBuffer, &vertexsize, &offset);
-		mContext->IASetIndexBuffer(renderer::triangleIdxBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-		mContext->IASetInputLayout(renderer::triangleLayout);
-		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		renderer::mesh->BindBuffer();
 
 		//Bind VS, PS 
 
-		mContext->VSSetShader(renderer::triangleVSShader, 0, 0);
-		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);
+		renderer::shader->Binds();
+		/*mContext->VSSetShader(renderer::triangleVSShader, 0, 0);
+		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);*/
 
 		// Draw Render Target
 		// mContext->Draw(3, 0);
