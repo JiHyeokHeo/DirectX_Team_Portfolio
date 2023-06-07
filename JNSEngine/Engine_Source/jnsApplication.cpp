@@ -35,10 +35,8 @@ namespace jns
 	}
 	void Application::Update()
 	{
-		//int a = 0;
 		Time::Update();
 		Input::Update();
-		renderer::Update();
 	}
 	void Application::LateUpdate()
 	{

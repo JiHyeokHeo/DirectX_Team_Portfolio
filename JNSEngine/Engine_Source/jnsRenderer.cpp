@@ -7,40 +7,34 @@
 namespace jns::renderer
 {
 	Vertex vertexes[4] = {};
-
-
-
-	// Input Layout (정점 정보)
 	ID3D11InputLayout* triangleLayout = nullptr;
-
-	// Vertex Buffer
 	jns::Mesh* mesh = nullptr;
-	
-	//ID3D11Buffer* triangleBuffer = nullptr;
-	//ID3D11Buffer* triangleIdxBuffer = nullptr;
-
-	ID3D11Buffer* triangleConstantBuffer = nullptr;
-
-
 	jns::Shader* shader = nullptr;
-	//// error blob
-	//ID3DBlob* errorBlob = nullptr;
-
-	//// Vertex Shader code -> Binary Code
-	//ID3DBlob* triangleVSBlob = nullptr;
-
-	//// Vertex Shader
-	//ID3D11VertexShader* triangleVSShader = nullptr;
-
-	//// Pixel Shader code -> Binary Code
-	//ID3DBlob* trianglePSBlob = nullptr;
-
-	// Vertex Shader
-	ID3D11PixelShader* trianglePSShader = nullptr;
+	jns::graphics::ConstantBuffer* constantBuffer = nullptr;
 
 	 void SetupState()
 	 {
+		 // Input layout 정점 구조 정보를 넘겨줘야한다.
+		 D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
 
+		 arrLayout[0].AlignedByteOffset = 0;
+		 arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		 arrLayout[0].InputSlot = 0;
+		 arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		 arrLayout[0].SemanticName = "POSITION";
+		 arrLayout[0].SemanticIndex = 0;
+
+		 arrLayout[1].AlignedByteOffset = 12;
+		 arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		 arrLayout[1].InputSlot = 0;
+		 arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		 arrLayout[1].SemanticName = "COLOR";
+		 arrLayout[1].SemanticIndex = 0;
+
+
+		 jns::graphics::GetDevice()->CreateInputLayout(arrLayout, 2
+			 , shader->GetVSCode()
+			 , shader->GetInputLayoutAddressOf());
 	 }
 
 	 void LoadBuffer()
@@ -66,18 +60,17 @@ namespace jns::renderer
 		 triangleCSDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
 		 triangleCSDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		 jns::graphics::GetDevice()->CreateBuffer(&triangleConstantBuffer, &triangleCSDesc, nullptr);
+		 constantBuffer = new jns::graphics::ConstantBuffer(eCBType::Transform);
+		 constantBuffer->Create(sizeof(Vector4));
 
 		 Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
-		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &pos, sizeof(Vector4));
-		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
-		 //
+		 constantBuffer->SetData(&pos);
+		 constantBuffer->Bind(eShaderStage::VS);
+
 	 }
 
 	 void LoadShader()
 	 {
-		 //jns::graphics::GetDevice()->CreateShader();
-
 		 shader = new jns::Shader();
 		 shader->Create(eShaderStage::VS, L"TriangleVS.hlsl", "main");
 		 shader->Create(eShaderStage::PS, L"TrianglePS.hlsl", "main");
@@ -85,7 +78,6 @@ namespace jns::renderer
 
 	 void Initialize()
 	 {
-		 mTrianglePos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 		 vertexes[0].pos = Vector3(0.0f, 0.5f, 0.0f);
 		 vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -150,44 +142,16 @@ namespace jns::renderer
 		 //}
 
 
-		 SetupState();
 		 LoadBuffer();
 		 LoadShader();
+		 SetupState();
 	 }
 
 	 void Release()
 	 {
-		 if (triangleLayout != nullptr)
-			 triangleLayout->Release();
-
-		 if (triangleConstantBuffer != nullptr)
-			 triangleConstantBuffer->Release();
-
-		 if (trianglePSShader != nullptr)
-			 trianglePSShader->Release();
-	 }
-
-	 void Update()
-	 {
-		 
-		 if(Input::GetKey(eKeyCode::LEFT))
-		 {
-			 mTrianglePos.x -= 0.1f * Time::DeltaTime();
-		 }
-		 else if (Input::GetKey(eKeyCode::RIGHT))
-		 {
-			 mTrianglePos.x += 0.1f * Time::DeltaTime();
-		 }
-		 else if (Input::GetKey(eKeyCode::DOWN))
-		 {
-			 mTrianglePos.y -= 0.1f * Time::DeltaTime();
-		 }
-		 else if (Input::GetKey(eKeyCode::UP))
-		 {
-			 mTrianglePos.y += 0.1f * Time::DeltaTime();
-		 }
-		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &mTrianglePos, sizeof(Vector4));
-		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
+		 delete mesh;
+		 delete shader;
+		 delete constantBuffer;
 	 }
 }
 

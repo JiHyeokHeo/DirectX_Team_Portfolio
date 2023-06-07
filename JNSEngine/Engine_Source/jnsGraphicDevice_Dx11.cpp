@@ -8,36 +8,16 @@ namespace jns::graphics
 {
 	GraphicDevice_Dx11::GraphicDevice_Dx11()
 	{
-		// 1. graphic device, context 생성
-
-		// 2. 화면에 렌더링 할수 있게 도와주는
-		// swapchain 생성
-
-		// 3. rendertarget,view 생성하고 
-		// 4. 깊이버퍼와 깊이버퍼 뷰 생성해주고
-
-		// 5. 렌더타겟 클리어 ( 화면 지우기 )
-		// 6. present 함수로 렌더타겟에 있는 텍스쳐를
-		//    모니터에 그려준다.
-
-		//mRenderTarget->
-		//mRenderTargetView->GetResource();
-
-		// Device, Context 생성
 		HWND hwnd = application.GetHwnd();
 		UINT deviceFlag = D3D11_CREATE_DEVICE_DEBUG;
 		D3D_FEATURE_LEVEL featureLevel = (D3D_FEATURE_LEVEL)0;
 
-		// ID3D11Device* pDevice = nullptr;
-		// ID3D11DeviceContext* pContext = nullptr;
-		// ID3D11DeviceContext** ppContext = &pContext;
 		D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr
 		, deviceFlag, nullptr, 0
 		, D3D11_SDK_VERSION
 		, mDevice.GetAddressOf(), &featureLevel
 		, mContext.GetAddressOf());
 
-		// SwapChain
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 		swapChainDesc.BufferCount = 2;
 		swapChainDesc.BufferDesc.Width = application.GetWidth();
@@ -46,12 +26,10 @@ namespace jns::graphics
 		if (!CreateSwapChain(&swapChainDesc, hwnd))
 			return;
 
-		// Get Rendertarget by Swapchain
 		if(FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D)
 			, (void**)mRenderTarget.GetAddressOf())))
 			return;
 
-		// Create RenderTarget View
 
 		mDevice->CreateRenderTargetView((ID3D11Resource*)mRenderTarget.Get()
 			, nullptr, mRenderTargetView.GetAddressOf());
@@ -79,17 +57,6 @@ namespace jns::graphics
 
 		RECT winRect = {};
 		GetClientRect(hwnd, &winRect);
-
-
-		//typedef struct D3D11_VIEWPORT
-		//{
-		//	FLOAT TopLeftX;
-		//	FLOAT TopLeftY;
-		//	FLOAT Width;
-		//	FLOAT Height;
-		//	FLOAT MinDepth;
-		//	FLOAT MaxDepth;
-		//} 	D3D11_VIEWPORT;
 
 		mViewPort =
 		{
@@ -148,6 +115,48 @@ namespace jns::graphics
 
 		return true;
 	}
+
+	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
+	{
+		D3D11_TEXTURE2D_DESC dxgiDesc = {};
+		dxgiDesc.BindFlags = desc->BindFlags;
+		dxgiDesc.Usage = desc->Usage;
+		dxgiDesc.CPUAccessFlags = 0;
+
+		dxgiDesc.Format = desc->Format;
+		dxgiDesc.Width = desc->Width;
+		dxgiDesc.Height = desc->Height;
+		dxgiDesc.ArraySize = desc->ArraySize;
+
+		dxgiDesc.SampleDesc.Count = desc->SampleDesc.Count;
+		dxgiDesc.SampleDesc.Quality = 0;
+
+		dxgiDesc.MipLevels = desc->MipLevels;
+		dxgiDesc.MiscFlags = desc->MiscFlags;
+
+		if (FAILED(mDevice->CreateTexture2D(&dxgiDesc, nullptr, mDepthStencilBuffer.ReleaseAndGetAddressOf())))
+			return false;
+
+		if (FAILED(mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr, mDepthStencilView.GetAddressOf())))
+			return false;
+
+		return true;
+	}
+
+	bool GraphicDevice_Dx11::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs
+		, UINT NumElements
+		, ID3DBlob* byteCode
+		, ID3D11InputLayout** ppInputLayout)
+	{
+		if (FAILED(mDevice->CreateInputLayout(pInputElementDescs, NumElements
+			, byteCode->GetBufferPointer()
+			, byteCode->GetBufferSize()
+			, ppInputLayout)))
+			return false;
+
+		return true;
+	}
+
 	bool GraphicDevice_Dx11::CreateBuffer(ID3D11Buffer** buffer, D3D11_BUFFER_DESC* desc, D3D11_SUBRESOURCE_DATA* data)
 	{
 		if (FAILED(mDevice->CreateBuffer(desc, data, buffer)))
@@ -155,71 +164,7 @@ namespace jns::graphics
 
 		return true;
 	}
-	bool GraphicDevice_Dx11::CreateShader()
-	{	
-		//std::filesystem::path shaderPath
-		//	= std::filesystem::current_path().parent_path();
-		//shaderPath += L"\\Shader_SOURCE\\";
-		//std::filesystem::path vsPath(shaderPath.c_str());
-		//vsPath += L"TriangleVS.hlsl";
-
-		//D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-		//	, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
-
-		//if (jns::renderer::errorBlob)
-		//{
-		//	OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
-		//	jns::renderer::errorBlob->Release();
-		//}
-
-		//mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
-		//	, jns::renderer::triangleVSBlob->GetBufferSize()
-		//	, nullptr, &jns::renderer::triangleVSShader);
-
-		//std::filesystem::path psPath(shaderPath.c_str());
-		//psPath += L"TrianglePS.hlsl";
-
-		//D3DCompileFromFile(psPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-		//	, "main", "ps_5_0", 0, 0, &jns::renderer::trianglePSBlob, &jns::renderer::errorBlob);
-
-		//if (jns::renderer::errorBlob)
-		//{
-		//	OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
-		//	jns::renderer::errorBlob->Release();
-		//}
-
-		//mDevice->CreatePixelShader(jns::renderer::trianglePSBlob->GetBufferPointer()
-		//	, jns::renderer::trianglePSBlob->GetBufferSize()
-		//	, nullptr, &jns::renderer::trianglePSShader);
-
-
-		//// Input layout 정점 구조 정보를 넘겨줘야한다.
-		//D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
-
-		//arrLayout[0].AlignedByteOffset = 0;
-		//arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		//arrLayout[0].InputSlot = 0;
-		//arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		//arrLayout[0].SemanticName = "POSITION";
-		//arrLayout[0].SemanticIndex = 0;
-
-		//arrLayout[1].AlignedByteOffset = 12;
-		//arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		//arrLayout[1].InputSlot = 0;
-		//arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		//arrLayout[1].SemanticName = "COLOR";
-		//arrLayout[1].SemanticIndex = 0;
-
-		//mDevice->CreateInputLayout(arrLayout, 2
-		//	, renderer::triangleVSBlob->GetBufferPointer()
-		//	, renderer::triangleVSBlob->GetBufferSize()
-		//	, &renderer::triangleLayout);
-
-
-
-
-		return true;
-	}
+	
 	bool GraphicDevice_Dx11::CompileFromfile(const std::wstring& fileName, const std::string& funcName, const std::string& version, ID3DBlob** ppCode)
 	{
 		ID3DBlob* errorBlob = nullptr;
@@ -253,31 +198,15 @@ namespace jns::graphics
 		
 		return true;
 	}
-	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
+
+	void GraphicDevice_Dx11::BindInputLayout(ID3D11InputLayout* pInputLayout)
 	{
-		D3D11_TEXTURE2D_DESC dxgiDesc = {};
-		dxgiDesc.BindFlags = desc->BindFlags;
-		dxgiDesc.Usage = desc->Usage;
-		dxgiDesc.CPUAccessFlags = 0;
+		mContext->IASetInputLayout(pInputLayout);
+	}
 
-		dxgiDesc.Format = desc->Format;
-		dxgiDesc.Width = desc->Width;
-		dxgiDesc.Height = desc->Height;
-		dxgiDesc.ArraySize = desc->ArraySize;
-
-		dxgiDesc.SampleDesc.Count = desc->SampleDesc.Count;
-		dxgiDesc.SampleDesc.Quality = 0;
-
-		dxgiDesc.MipLevels = desc->MipLevels;
-		dxgiDesc.MiscFlags = desc->MiscFlags;
-
-		if (FAILED(mDevice->CreateTexture2D(&dxgiDesc, nullptr, mDepthStencilBuffer.ReleaseAndGetAddressOf())))
-			return false;
-
-		if (FAILED(mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr, mDepthStencilView.GetAddressOf())))
-			return false;
-
-		return true;
+	void GraphicDevice_Dx11::BindPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY Topology)
+	{
+		mContext->IASetPrimitiveTopology(Topology);
 	}
 
 	void GraphicDevice_Dx11::BindViewPort(D3D11_VIEWPORT* viewPort)
@@ -363,6 +292,7 @@ namespace jns::graphics
 		HWND hWnd = application.GetHwnd();
 		RECT winRect = {};
 		GetClientRect(hWnd, &winRect);
+
 		mViewPort =
 		{
 			0.0f, 0.0f
@@ -371,23 +301,17 @@ namespace jns::graphics
 			, 0.0f, 1.0f
 		};
 
-		// Bind ViewPort
 		BindViewPort(&mViewPort);
 		mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
 		renderer::mesh->BindBuffer();
 
-		//Bind VS, PS 
+		mContext->IASetInputLayout(renderer::shader->GetInputLayout());
 
 		renderer::shader->Binds();
-		/*mContext->VSSetShader(renderer::triangleVSShader, 0, 0);
-		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);*/
 
-		// Draw Render Target
-		// mContext->Draw(3, 0);
 		mContext->DrawIndexed(3, 0, 0);
 
-		// 렌더타겟에 있는 이미지를 화면에 그려준다
 		mSwapChain->Present(0, 0);
 	}
 }

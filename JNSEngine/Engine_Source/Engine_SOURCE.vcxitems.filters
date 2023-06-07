@@ -72,8 +72,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h">
       <Filter>Graphics\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)jnsMesh.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)jnsShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsMesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsShader.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsConstantBuffer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp">
@@ -103,8 +110,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp">
       <Filter>Graphics\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)jnsMesh.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)jnsShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsMesh.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsConstantBuffer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)jnsMath.inl">
