@@ -4,10 +4,9 @@
 #include "jnsTime.h"
 
 
-namespace jns::renderer
+namespace renderer
 {
 	Vertex vertexes[4] = {};
-	ID3D11InputLayout* triangleLayout = nullptr;
 	jns::Mesh* mesh = nullptr;
 	jns::Shader* shader = nullptr;
 	jns::graphics::ConstantBuffer* constantBuffer = nullptr;

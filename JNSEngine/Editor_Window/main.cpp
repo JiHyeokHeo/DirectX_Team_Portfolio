@@ -2,6 +2,7 @@
 #include "framework.h"
 #include "Editor_Window.h"
 #include "jnsApplication.h"
+#include "jnsRenderer.h"
 
 #define MAX_LOADSTRING 100
 
@@ -60,6 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+    renderer::Release();
     return (int) msg.wParam;
 }
 

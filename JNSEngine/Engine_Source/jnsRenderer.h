@@ -7,7 +7,7 @@
 
 using namespace jns::math;
 
-namespace jns::renderer
+namespace renderer
 {
 	struct Vertex
 	{
