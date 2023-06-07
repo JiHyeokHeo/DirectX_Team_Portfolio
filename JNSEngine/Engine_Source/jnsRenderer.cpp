@@ -38,7 +38,6 @@ namespace jns::renderer
 	// Vertex Shader
 	ID3D11PixelShader* trianglePSShader = nullptr;
 
-
 	 void SetupState()
 	 {
 
