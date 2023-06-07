@@ -41,4 +41,5 @@ This is a link to the way we studied and the direction of work. <br/>
   # Week 2(5/29 ~ 6/4) 
 
 - Move the shape by pressing the arrow keys
+- Added and managed Mesh class and Shader class
   
