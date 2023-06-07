@@ -1,30 +1,42 @@
 #include "jnsRenderer.h"
+#include "jnsMath.h"
+#include "jnsInput.h"
+#include "jnsTime.h"
+
 
 namespace jns::renderer
 {
-	 Vertex vertexes[9] = {};
+	Vertex vertexes[4] = {};
 
-	 //초기화되지 않은 객체를 사용하게 되면 오류가 발생하므로 우선  nullptr 값으로 채워둔다
-	 // Input Layout (정점 정보)
-	 ID3D11InputLayout* triangleLayout = nullptr;
 
-	 // Vertex Buffer
-	 ID3D11Buffer* triangleBuffer = nullptr;
 
-	 // error blob
-	 ID3DBlob* errorBlob = nullptr;
-	 
-	 // Vertex Shader Code -> Binary Code 
-	 ID3DBlob* triangleVSBlob = nullptr;
+	// Input Layout (정점 정보)
+	ID3D11InputLayout* triangleLayout = nullptr;
 
-	 // Vertex Shader
-	 ID3D11VertexShader* triangleVSShader = nullptr;
-	 
-	 // Pixel Shader Code -> Binary Code
-	 ID3DBlob* trianglePSBlob = nullptr;
+	// Vertex Buffer
+	jns::Mesh* mesh = nullptr;
+	
+	//ID3D11Buffer* triangleBuffer = nullptr;
+	//ID3D11Buffer* triangleIdxBuffer = nullptr;
 
-	 // Vertex Shader
-	 ID3D11PixelShader* trianglePSShader = nullptr;
+	ID3D11Buffer* triangleConstantBuffer = nullptr;
+
+
+	jns::Shader* shader = nullptr;
+	//// error blob
+	//ID3DBlob* errorBlob = nullptr;
+
+	//// Vertex Shader code -> Binary Code
+	//ID3DBlob* triangleVSBlob = nullptr;
+
+	//// Vertex Shader
+	//ID3D11VertexShader* triangleVSShader = nullptr;
+
+	//// Pixel Shader code -> Binary Code
+	//ID3DBlob* trianglePSBlob = nullptr;
+
+	// Vertex Shader
+	ID3D11PixelShader* trianglePSShader = nullptr;
 
 	 void SetupState()
 	 {
@@ -33,69 +45,149 @@ namespace jns::renderer
 
 	 void LoadBuffer()
 	 {
-		 //버퍼객체의 속성을 지정하기 위한 인터페이스
-		 D3D11_BUFFER_DESC triangleDesc = {};
+		 // Vertex Buffer
+		 mesh = new jns::Mesh();
+		 mesh->CreateVertexBuffer(vertexes, 4);
 
-		 //버퍼의 사용방법을 지정, USAGE_DYNAMIC은 버퍼가 빈번하게 변경될 때 유용
-		triangleDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+		 std::vector<UINT> indexes = {};
+		 indexes.push_back(0);
+		 indexes.push_back(1);
+		 indexes.push_back(2);
 
-		//버퍼의 크기 지정
-		triangleDesc.ByteWidth = sizeof(Vertex) * 9;
-		
-		//바인드 플래그를 정점 버퍼로 지정
-		//바인드 플래그란? 버퍼가 어떤 용도로 사용될 지 지정하는 역할 (인덱스 버퍼 or 정점 버퍼)
-		triangleDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+		 indexes.push_back(0);
+		 indexes.push_back(2);
+		 indexes.push_back(3);
+		 mesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
-		//CPU가 버퍼에 엑세스 하는 방법 지정 -> WRITE 이므로 CPU는 버퍼에 대해 쓰기 작업 가능
-		triangleDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+		 // Constant Buffer
+		 D3D11_BUFFER_DESC triangleCSDesc = {};
+		 triangleCSDesc.ByteWidth = sizeof(Vector4);
+		 triangleCSDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
+		 triangleCSDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+		 triangleCSDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		// 그래픽스 자원의 초기 데이터를 가진 인터페이스
-		 D3D11_SUBRESOURCE_DATA triangleData = {};
-		 //pSysMem는 그래픽스 초기 자원의 포인터, vertexes의 주소를 할당함 
-		 triangleData.pSysMem = vertexes;
+		 jns::graphics::GetDevice()->CreateBuffer(&triangleConstantBuffer, &triangleCSDesc, nullptr);
 
-		 jns::graphics::GetDevice()->CreateBuffer(&triangleBuffer, &triangleDesc, &triangleData);
+		 Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
+		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &pos, sizeof(Vector4));
+		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
+		 //
 	 }
 
 	 void LoadShader()
 	 {
-		 //그래픽 디바이스의 포인터를 반환받고 쉐이더를 생성한다 // 그래픽 디바이스 = 그래픽 카드
-		 jns::graphics::GetDevice()->CreateShader();
+		 //jns::graphics::GetDevice()->CreateShader();
+
+		 shader = new jns::Shader();
+		 shader->Create(eShaderStage::VS, L"TriangleVS.hlsl", "main");
+		 shader->Create(eShaderStage::PS, L"TrianglePS.hlsl", "main");
 	 }
 
 	 void Initialize()
 	 {
-		 //시계 방향으로 그려주어야 한다.
-		 vertexes[0].pos = Vector3(-0.5f, 0.8f, 0.5f);
+		 mTrianglePos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+		 vertexes[0].pos = Vector3(0.0f, 0.5f, 0.0f);
 		 vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 
-		 vertexes[1].pos = Vector3(-0.2f, 0.8f, 0.5f);
+		 vertexes[1].pos = Vector3(0.5f, -0.5f, 0.0f);
 		 vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 
-		 vertexes[2].pos = Vector3(-0.5f, 0.0f, 0.5f);
+		 vertexes[2].pos = Vector3(-0.5f, -0.5f, 0.0f);
 		 vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-	
-		 vertexes[3].pos = Vector3(-0.2f, 0.8f, 0.5f);
-		 vertexes[3].color = Vector4(2.0f, 0.5f, 0.5f, 1.0f);
 
-		 vertexes[4].pos = Vector3(-0.2f, 0.0f, 0.5f);
-		 vertexes[4].color = Vector4(0.5f, 2.0f, 0.5f, 1.0f);
+		 //vertexes[3].pos = Vector3(-0.8f, 0.8f, 0.5f);
+		 //vertexes[3].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 
-		 vertexes[5].pos = Vector3(-0.5f, 0.0f, 0.5f);
-		 vertexes[5].color = Vector4(0.5f, 0.5f, 2.0f, 1.0f);
-		 //
-		 vertexes[6].pos = Vector3(0.5f, 0.0f, 0.5f);
-		 vertexes[6].color = Vector4(0.7f, 0.2f, 0.6f, 1.0f);
+		 //vertexes[4].pos = Vector3(-0.5f, 0.8f, 0.5f);
+		 //vertexes[4].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 
-		 vertexes[7].pos = Vector3(0.7f, -0.4f, 0.5f);
-		 vertexes[7].color = Vector4(0.3f, 0.5f, 0.2f, 1.0f);
+		 //vertexes[5].pos = Vector3(-0.5f, 0.5f, 0.5f);
+		 //vertexes[5].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 
-		 vertexes[8].pos = Vector3(0.3f, -0.4f, 0.5f);
-		 vertexes[8].color = Vector4(0.1f, 0.4f, 0.8f, 1.0f);
+
+		 //vertexes[6].pos = Vector3(0.5f, 0.8f, 0.5f);
+		 //vertexes[6].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+
+		 //vertexes[7].pos = Vector3(0.8f, 0.5f, 0.5f);
+		 //vertexes[7].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+
+		 //vertexes[8].pos = Vector3(0.2f, 0.5f, 0.5f);
+		 //vertexes[8].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+		 //vertexes[9].pos = Vector3(0.8f, 0.5f, 0.5f);
+		 //vertexes[9].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+
+		 //vertexes[10].pos = Vector3(0.5f, 0.2f, 0.5f);
+		 //vertexes[10].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+
+		 //vertexes[11].pos = Vector3(0.2f, 0.5f, 0.5f);
+		 //vertexes[11].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+		 //float start_x =  0.0f;
+		 //float start_y =  0.3f;
+		 //float angle =  -5.0f;
+		 //float center_x = 0.0f;
+		 //float center_y = 0.0f;
+
+
+		 //Vector2 turnPos = Vector2(start_x, start_y);
+		 //for (int i = 12; i < 255;)
+		 //{
+			// vertexes[i].pos = Vector3(center_x, center_y, 0.5f);
+			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+			// i++;
+			// vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
+			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+			// Rotate(turnPos.x, turnPos.y, angle);
+
+			// i++;
+			// vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
+			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+			// i++;
+		 //}
+
 
 		 SetupState();
 		 LoadBuffer();
 		 LoadShader();
+	 }
+
+	 void Release()
+	 {
+		 if (triangleLayout != nullptr)
+			 triangleLayout->Release();
+
+		 if (triangleConstantBuffer != nullptr)
+			 triangleConstantBuffer->Release();
+
+		 if (trianglePSShader != nullptr)
+			 trianglePSShader->Release();
+	 }
+
+	 void Update()
+	 {
+		 
+		 if(Input::GetKey(eKeyCode::LEFT))
+		 {
+			 mTrianglePos.x -= 0.1f * Time::DeltaTime();
+		 }
+		 else if (Input::GetKey(eKeyCode::RIGHT))
+		 {
+			 mTrianglePos.x += 0.1f * Time::DeltaTime();
+		 }
+		 else if (Input::GetKey(eKeyCode::DOWN))
+		 {
+			 mTrianglePos.y -= 0.1f * Time::DeltaTime();
+		 }
+		 else if (Input::GetKey(eKeyCode::UP))
+		 {
+			 mTrianglePos.y += 0.1f * Time::DeltaTime();
+		 }
+		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &mTrianglePos, sizeof(Vector4));
+		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
 	 }
 }
 

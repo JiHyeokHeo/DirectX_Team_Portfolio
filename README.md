@@ -36,10 +36,5 @@ This is a link to the way we studied and the direction of work. <br/>
   
 - Vertex Buffer Create & Vertex Shader Create (2023/05/25)
 
-- Tried to render a triangle (2023/05/26)
   
-  # Week 2(5/29 ~ 6/4) 
-
-- Move the shape by pressing the arrow keys
-- Added and managed Mesh class and Shader class
   

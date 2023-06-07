@@ -16,7 +16,7 @@ namespace jns::graphics
 		// 3. rendertarget,view 생성하고 
 		// 4. 깊이버퍼와 깊이버퍼 뷰 생성해주고
 
-		// 5. 레더타겟 클리어 ( 화면 지우기 )
+		// 5. 렌더타겟 클리어 ( 화면 지우기 )
 		// 6. present 함수로 렌더타겟에 있는 텍스쳐를
 		//    모니터에 그려준다.
 
@@ -150,15 +150,6 @@ namespace jns::graphics
 	}
 	bool GraphicDevice_Dx11::CreateBuffer(ID3D11Buffer** buffer, D3D11_BUFFER_DESC* desc, D3D11_SUBRESOURCE_DATA* data)
 	{
-		//D3D11_BUFFER_DESC triangleDesc = {};
-		//triangleDesc.ByteWidth = desc->ByteWidth;
-		//triangleDesc.BindFlags = desc->BindFlags;
-		//triangleDesc.CPUAccessFlags = desc->CPUAccessFlags;
-
-
-		/*D3D11_SUBRESOURCE_DATA triangleData = {};
-		triangleData.pSysMem = vertexes;*/
-
 		if (FAILED(mDevice->CreateBuffer(desc, data, buffer)))
 			return false;
 
@@ -166,70 +157,100 @@ namespace jns::graphics
 	}
 	bool GraphicDevice_Dx11::CreateShader()
 	{	
-		//shaderPath는 프로그램이 실행되는 경로, 쉐이더 소스의 위치로 지정
-		std::filesystem::path shaderPath
-			= std::filesystem::current_path().parent_path();
-		shaderPath += L"\\Shader_SOURCE\\";
+		//std::filesystem::path shaderPath
+		//	= std::filesystem::current_path().parent_path();
+		//shaderPath += L"\\Shader_SOURCE\\";
+		//std::filesystem::path vsPath(shaderPath.c_str());
+		//vsPath += L"TriangleVS.hlsl";
 
-		std::filesystem::path vsPath(shaderPath.c_str());
-		vsPath += L"TriangleVS.hlsl";
+		//D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		//	, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
 
-		//지정한 위치, TriangleVS 코드를 컴파일해서 정점 쉐이더 코드를 생성하고 그 결과를 triangleVSBlob에 저장
-		D3DCompileFromFile(vsPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-			, "main", "vs_5_0", 0, 0, &jns::renderer::triangleVSBlob, &jns::renderer::errorBlob);
+		//if (jns::renderer::errorBlob)
+		//{
+		//	OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
+		//	jns::renderer::errorBlob->Release();
+		//}
 
-		if (jns::renderer::errorBlob)
+		//mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
+		//	, jns::renderer::triangleVSBlob->GetBufferSize()
+		//	, nullptr, &jns::renderer::triangleVSShader);
+
+		//std::filesystem::path psPath(shaderPath.c_str());
+		//psPath += L"TrianglePS.hlsl";
+
+		//D3DCompileFromFile(psPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+		//	, "main", "ps_5_0", 0, 0, &jns::renderer::trianglePSBlob, &jns::renderer::errorBlob);
+
+		//if (jns::renderer::errorBlob)
+		//{
+		//	OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
+		//	jns::renderer::errorBlob->Release();
+		//}
+
+		//mDevice->CreatePixelShader(jns::renderer::trianglePSBlob->GetBufferPointer()
+		//	, jns::renderer::trianglePSBlob->GetBufferSize()
+		//	, nullptr, &jns::renderer::trianglePSShader);
+
+
+		//// Input layout 정점 구조 정보를 넘겨줘야한다.
+		//D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
+
+		//arrLayout[0].AlignedByteOffset = 0;
+		//arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		//arrLayout[0].InputSlot = 0;
+		//arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		//arrLayout[0].SemanticName = "POSITION";
+		//arrLayout[0].SemanticIndex = 0;
+
+		//arrLayout[1].AlignedByteOffset = 12;
+		//arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		//arrLayout[1].InputSlot = 0;
+		//arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		//arrLayout[1].SemanticName = "COLOR";
+		//arrLayout[1].SemanticIndex = 0;
+
+		//mDevice->CreateInputLayout(arrLayout, 2
+		//	, renderer::triangleVSBlob->GetBufferPointer()
+		//	, renderer::triangleVSBlob->GetBufferSize()
+		//	, &renderer::triangleLayout);
+
+
+
+
+		return true;
+	}
+	bool GraphicDevice_Dx11::CompileFromfile(const std::wstring& fileName, const std::string& funcName, const std::string& version, ID3DBlob** ppCode)
+	{
+		ID3DBlob* errorBlob = nullptr;
+		D3DCompileFromFile(fileName.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
+			, funcName.c_str(), version.c_str(), 0, 0, ppCode, &errorBlob);
+
+		if (errorBlob)
 		{
-			OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
-			jns::renderer::errorBlob->Release();
+			OutputDebugStringA((char*)(errorBlob->GetBufferPointer()));
+			errorBlob->Release();
+			errorBlob = nullptr;
 		}
+		
+		return false;
+	}
+	bool GraphicDevice_Dx11::CreateVertexShader(const void* pShaderByteCode
+		, SIZE_T BytecodeLength
+		, ID3D11VertexShader** ppVertexShader)
+	{
+		if (FAILED(mDevice->CreateVertexShader(pShaderByteCode, BytecodeLength, nullptr, ppVertexShader)))
+			return false;
 
-		//우리가 만든 쉐이더 코드를 triangleVSBlob에 저장하고 CreateVertexShader함수로
-		//실제 쉐이더 객체를 만들어서 triangleVSShader에 저장
-		mDevice->CreateVertexShader(jns::renderer::triangleVSBlob->GetBufferPointer()
-			, jns::renderer::triangleVSBlob->GetBufferSize()
-			, nullptr, &jns::renderer::triangleVSShader);
-
-		std::filesystem::path psPath(shaderPath.c_str());
-		psPath += L"TrianglePS.hlsl";
-
-		D3DCompileFromFile(psPath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE
-			, "main", "ps_5_0", 0, 0, &jns::renderer::trianglePSBlob, &jns::renderer::errorBlob);
-
-		if (jns::renderer::errorBlob)
-		{
-			OutputDebugStringA((char*)jns::renderer::errorBlob->GetBufferPointer());
-			jns::renderer::errorBlob->Release();
-		}
-
-		//
-		mDevice->CreatePixelShader(jns::renderer::trianglePSBlob->GetBufferPointer()
-			, jns::renderer::trianglePSBlob->GetBufferSize()
-			, nullptr, &jns::renderer::trianglePSShader);
-
-
-		// Input layout 정점 구조 정보를 넘겨줘야한다.
-		D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
-
-		arrLayout[0].AlignedByteOffset = 0;
-		arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		arrLayout[0].InputSlot = 0;
-		arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		arrLayout[0].SemanticName = "POSITION";
-		arrLayout[0].SemanticIndex = 0;
-
-		arrLayout[1].AlignedByteOffset = 12;
-		arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		arrLayout[1].InputSlot = 0;
-		arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		arrLayout[1].SemanticName = "COLOR";
-		arrLayout[1].SemanticIndex = 0;
-
-		mDevice->CreateInputLayout(arrLayout, 2
-			, renderer::triangleVSBlob->GetBufferPointer()
-			, renderer::triangleVSBlob->GetBufferSize()
-			, &renderer::triangleLayout);
-
+		return true;
+	}
+	bool GraphicDevice_Dx11::CreatePixelShader(const void* pPixelByteCode
+		, SIZE_T BytecodeLength
+		, ID3D11PixelShader** ppPixelShader)
+	{
+		if (FAILED(mDevice->CreatePixelShader(pPixelByteCode, BytecodeLength, nullptr, ppPixelShader)))
+			return false;
+		
 		return true;
 	}
 	bool GraphicDevice_Dx11::CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data)
@@ -264,6 +285,73 @@ namespace jns::graphics
 		mContext->RSSetViewports(1, viewPort);
 	}
 
+	void GraphicDevice_Dx11::BindVertexBuffer(UINT StartSlot, ID3D11Buffer* const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets)
+	{
+		mContext->IASetVertexBuffers(StartSlot, 1, ppVertexBuffers, pStrides, pOffsets);
+	}
+
+	void GraphicDevice_Dx11::BindIndexBuffer(ID3D11Buffer* pIndexBuffer, DXGI_FORMAT Format, UINT Offset)
+	{
+		mContext->IASetIndexBuffer(pIndexBuffer, Format, Offset);
+	}
+
+	void GraphicDevice_Dx11::BindVertexShader(ID3D11VertexShader* pVertexShader)
+	{
+		mContext->VSSetShader(pVertexShader, 0, 0);
+	}
+
+	void GraphicDevice_Dx11::BindPixelShader(ID3D11PixelShader* pPixelShader)
+	{
+		mContext->PSSetShader(pPixelShader, 0, 0);
+	}
+
+	void GraphicDevice_Dx11::SetConstantBuffer(ID3D11Buffer* buffer, void* data, UINT size)
+	{
+		D3D11_MAPPED_SUBRESOURCE subRes = {};
+		mContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subRes);
+		memcpy(subRes.pData, data, size);
+		mContext->Unmap(buffer, 0);
+	}
+
+	void GraphicDevice_Dx11::BindConstantBuffer(eShaderStage stage, eCBType type, ID3D11Buffer* buffer)
+	{
+		switch (stage)
+		{
+		case eShaderStage::VS:
+			mContext->VSSetConstantBuffers((UINT)type, 1, &buffer);
+			break;
+		case eShaderStage::HS:
+			mContext->HSSetConstantBuffers((UINT)type, 1, &buffer);
+			break;
+		case eShaderStage::DS:
+			mContext->DSSetConstantBuffers((UINT)type, 1, &buffer);
+			break;
+		case eShaderStage::GS:
+			mContext->GSSetConstantBuffers((UINT)type, 1, &buffer);
+			break;
+		case eShaderStage::PS:
+			mContext->PSSetConstantBuffers((UINT)type, 1, &buffer);
+			break;
+		case eShaderStage::CS:
+			mContext->CSSetConstantBuffers((UINT)type, 1, &buffer);
+			break;
+		case eShaderStage::End:
+			break;
+		default:
+			break;
+		}
+	}
+
+	void GraphicDevice_Dx11::BindsConstantBuffer(eShaderStage stage, eCBType type, ID3D11Buffer* buffer)
+	{
+		mContext->VSSetConstantBuffers((UINT)type, 1, &buffer);
+		mContext->HSSetConstantBuffers((UINT)type, 1, &buffer);
+		mContext->DSSetConstantBuffers((UINT)type, 1, &buffer);
+		mContext->GSSetConstantBuffers((UINT)type, 1, &buffer);
+		mContext->PSSetConstantBuffers((UINT)type, 1, &buffer);
+		mContext->CSSetConstantBuffers((UINT)type, 1, &buffer);
+	}
+
 	void GraphicDevice_Dx11::Draw()
 	{
 		// render target clear
@@ -283,28 +371,21 @@ namespace jns::graphics
 			, 0.0f, 1.0f
 		};
 
+		// Bind ViewPort
 		BindViewPort(&mViewPort);
 		mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
-		// input assembler 정점데이터 정보 지정
-		UINT vertexsize = sizeof(renderer::Vertex);
-		UINT offset = 0;
-
-		//입력 어셈블러에 정점 버퍼, 입력 레이아웃 등을 설정
-		mContext->IASetVertexBuffers(0, 1, &renderer::triangleBuffer, &vertexsize, &offset);
-		mContext->IASetInputLayout(renderer::triangleLayout);
-		//그리는 방식
-		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		renderer::mesh->BindBuffer();
 
 		//Bind VS, PS 
 
-		//그래픽 디바이스에 이전에 만든 버텍스셰이더, 픽셀셰이더 객체를 바인딩(연결)
-		mContext->VSSetShader(renderer::triangleVSShader, 0, 0);
-		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);
+		renderer::shader->Binds();
+		/*mContext->VSSetShader(renderer::triangleVSShader, 0, 0);
+		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);*/
 
 		// Draw Render Target
-		//9개의 정점, 그리기 시작할 인덱스는 0번
-		mContext->Draw(9, 0);
+		// mContext->Draw(3, 0);
+		mContext->DrawIndexed(3, 0, 0);
 
 		// 렌더타겟에 있는 이미지를 화면에 그려준다
 		mSwapChain->Present(0, 0);

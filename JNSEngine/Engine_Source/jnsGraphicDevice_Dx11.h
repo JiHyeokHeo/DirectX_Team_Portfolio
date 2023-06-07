@@ -1,5 +1,6 @@
 #pragma once
 #include "JNSEngine.h"
+#include "jnsGraphics.h"
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -19,9 +20,26 @@ namespace jns::graphics
 		bool CreateBuffer(ID3D11Buffer** buffer, D3D11_BUFFER_DESC* desc, D3D11_SUBRESOURCE_DATA* data);
 		bool CreateShader();
 		
+		bool CompileFromfile(const std::wstring& fileName, const std::string& funcName, const std::string& version, ID3DBlob** ppCode);
+		bool CreateVertexShader(const void* pShaderByteCode, SIZE_T BytecodeLength, ID3D11VertexShader** ppVertexShader);
+		bool CreatePixelShader(const void* pPixelByteCode, SIZE_T BytecodeLength, ID3D11PixelShader** ppPixelShader);
+
 		bool CreateTexture(const D3D11_TEXTURE2D_DESC* desc, void* data);
 
 		void BindViewPort(D3D11_VIEWPORT* viewPort);
+
+		void BindVertexBuffer(UINT StartSlot, ID3D11Buffer* const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets);
+		void BindIndexBuffer(ID3D11Buffer* pIndexBuffer, DXGI_FORMAT Format, UINT Offset);
+		
+		void BindVertexShader(ID3D11VertexShader* pVertexShader);
+		void BindPixelShader(ID3D11PixelShader* pPixelShader);
+
+
+		void SetConstantBuffer(ID3D11Buffer* buffer, void* data, UINT size);
+		void BindConstantBuffer(eShaderStage stage, eCBType type, ID3D11Buffer* buffer);
+		void BindsConstantBuffer(eShaderStage stage, eCBType type, ID3D11Buffer* buffer);
+
+		
 
 		void Draw();
 
@@ -54,7 +72,6 @@ namespace jns::graphics
 	// 싱글턴 패턴과 유사하다.
 	inline GraphicDevice_Dx11*& GetDevice()
 	{
-		//그래픽스 디바이스의 포인터 반환 
 		static GraphicDevice_Dx11* device = nullptr;
 		return device;
 	}

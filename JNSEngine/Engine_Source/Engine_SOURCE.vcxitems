@@ -24,8 +24,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsInput.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsMath.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JNSEngine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsMesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsResources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsTime.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h" />
   </ItemGroup>
@@ -35,8 +37,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsGraphicDevice_Dx11.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsInput.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsMesh.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsResource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsTime.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsRenderer.cpp" />
   </ItemGroup>
