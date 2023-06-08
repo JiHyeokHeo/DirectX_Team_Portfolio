@@ -33,6 +33,7 @@ namespace jns
 			return &mInputLayout;
 		}
 
+
 	private:
 		ID3D11InputLayout* mInputLayout;
 		D3D11_PRIMITIVE_TOPOLOGY mTopology;

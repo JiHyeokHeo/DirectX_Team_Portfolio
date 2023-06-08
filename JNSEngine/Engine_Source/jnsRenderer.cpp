@@ -6,7 +6,7 @@
 
 namespace renderer
 {
-	Vertex vertexes[4] = {};
+	Vertex vertexes[361] = {};
 	jns::Mesh* mesh = nullptr;
 	jns::Shader* shader = nullptr;
 	jns::graphics::ConstantBuffer* constantBuffer = nullptr;
@@ -62,9 +62,9 @@ namespace renderer
 		 constantBuffer = new jns::graphics::ConstantBuffer(eCBType::Transform);
 		 constantBuffer->Create(sizeof(Vector4));
 
-		 Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
-		 constantBuffer->SetData(&pos);
-		 constantBuffer->Bind(eShaderStage::VS);
+		 //Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
+		 //constantBuffer->SetData(&pos);
+		 //constantBuffer->Bind(eShaderStage::VS);
 
 	 }
 

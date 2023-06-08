@@ -46,6 +46,8 @@ namespace jns
 	}
 	void Shader::Binds()
 	{
+		GetDevice()->BindInputLayout(mInputLayout);
+		GetDevice()->BindPrimitiveTopology(mTopology);
 		GetDevice()->BindVertexShader(mVS.Get());
 		GetDevice()->BindPixelShader(mPS.Get());
 	}

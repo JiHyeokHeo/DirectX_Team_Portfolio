@@ -1,6 +1,7 @@
 #pragma once
 #include "JNSEngine.h"
 #include "jnsGraphicDevice_Dx11.h"
+#include "jnsScene.h"
 
 namespace jns
 {
@@ -30,5 +31,7 @@ namespace jns
 		HWND mHwnd;
 		UINT mWidth;
 		UINT mHeight;
+		
+		Scene* mScene;
 	};
 }
