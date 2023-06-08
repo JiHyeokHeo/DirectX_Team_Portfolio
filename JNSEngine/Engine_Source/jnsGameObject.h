@@ -22,11 +22,12 @@ namespace jns
 		virtual void LateUpdate();
 		virtual void Render();
 		
-	
+		void SetPos(Vector2 pos) { mPos = pos; }
+		Vector2 GetPos() { return mPos; }
 	private:
 		eState mState;
 		//std::vector<Component*> mComponents;
-		
+		Vector2 mPos;
 	};
 
 }

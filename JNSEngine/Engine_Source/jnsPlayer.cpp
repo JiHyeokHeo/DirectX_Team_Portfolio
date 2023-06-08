@@ -21,10 +21,12 @@ namespace jns
 		mousePos.y -= 400.0f;
 		mousePos.Normalize();
 
-		GetPos();
+		Vector2 mPos = GetPos();
 
 		mPos.x += 0.5f * mousePos.x * Time::DeltaTime();
 		mPos.y -= 0.5f * mousePos.y * Time::DeltaTime();
+
+		SetPos(mPos);
 
 		GameObject::Update();
 	}
