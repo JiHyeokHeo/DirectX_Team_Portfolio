@@ -10,7 +10,7 @@ namespace jns
 		, mIBDesc{}
 		, mIndexCount(0)
 	{
-		//int a = 0;
+
 	}
 
 	Mesh::~Mesh()
