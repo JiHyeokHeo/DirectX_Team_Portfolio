@@ -6,7 +6,19 @@
 
 namespace renderer
 {
-	Vertex vertexes[361] = {};
+	inline static void Rotate(float& x, float& y, float degree)
+	{
+		float radian = (degree / 180.0f) * 3.141592;   // 1라디안은 57.3돈가? 그정도임 즉 코사인과 사인 세타값을 구하기 위해서는 라디안의 개념을 사용해야하고
+		//Vector2(x,y).Normalize();						// Normalize는 결국 1, 1로 만들어 준것이고.
+
+		float t = x * cosf(radian) - y * sinf(radian); // 이것이 바로 강사 선생님이 주신 삼각함수를 활용한 벡터의 회전이다. x좌표는 x코사인세타 - y사인세타
+		float z = x * sinf(radian) + y * cosf(radian); // 
+		//atan
+		//atan();
+		x = t;
+		y = z;
+	}
+	Vertex vertexes[362] = {};
 	jns::Mesh* mesh = nullptr;
 	jns::Shader* shader = nullptr;
 	jns::graphics::ConstantBuffer* transformconstantBuffer;
@@ -41,16 +53,16 @@ namespace renderer
 	 {
 		 // Vertex Buffer
 		 mesh = new jns::Mesh();
-		 mesh->CreateVertexBuffer(vertexes, 4);
+		 mesh->CreateVertexBuffer(vertexes, 362);
 
 		 std::vector<UINT> indexes = {};
-		 indexes.push_back(0);
-		 indexes.push_back(1);
-		 indexes.push_back(2);
 
-		 indexes.push_back(0);
-		 indexes.push_back(2);
-		 indexes.push_back(3);
+		 for (int i = 1; i < 361; i++)
+		 {
+			 indexes.push_back(0);
+			 indexes.push_back(i);
+			 indexes.push_back(i + 1);
+		 }
 		 mesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		 // Constant Buffer
@@ -75,69 +87,21 @@ namespace renderer
 
 	 void Initialize()
 	 {
-		 vertexes[0].pos = Vector3(0.0f, 0.5f, 0.0f);
-		 vertexes[0].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		 float start_x = 0.0f;
+		 float start_y = 0.5f;
+		 float angle = -1.0f;
+		 float center_x = 0.0f;
+		 float center_y = 0.0f;
 
-		 vertexes[1].pos = Vector3(0.5f, -0.5f, 0.0f);
-		 vertexes[1].color = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-
-		 vertexes[2].pos = Vector3(-0.5f, -0.5f, 0.0f);
-		 vertexes[2].color = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[3].pos = Vector3(-0.8f, 0.8f, 0.5f);
-		 //vertexes[3].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[4].pos = Vector3(-0.5f, 0.8f, 0.5f);
-		 //vertexes[4].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-		 //vertexes[5].pos = Vector3(-0.5f, 0.5f, 0.5f);
-		 //vertexes[5].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-
-		 //vertexes[6].pos = Vector3(0.5f, 0.8f, 0.5f);
-		 //vertexes[6].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[7].pos = Vector3(0.8f, 0.5f, 0.5f);
-		 //vertexes[7].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-		 //vertexes[8].pos = Vector3(0.2f, 0.5f, 0.5f);
-		 //vertexes[8].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-		 //vertexes[9].pos = Vector3(0.8f, 0.5f, 0.5f);
-		 //vertexes[9].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[10].pos = Vector3(0.5f, 0.2f, 0.5f);
-		 //vertexes[10].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-		 //vertexes[11].pos = Vector3(0.2f, 0.5f, 0.5f);
-		 //vertexes[11].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-		 //float start_x =  0.0f;
-		 //float start_y =  0.3f;
-		 //float angle =  -5.0f;
-		 //float center_x = 0.0f;
-		 //float center_y = 0.0f;
-
-
-		 //Vector2 turnPos = Vector2(start_x, start_y);
-		 //for (int i = 12; i < 255;)
-		 //{
-			// vertexes[i].pos = Vector3(center_x, center_y, 0.5f);
-			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-			// i++;
-			// vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
-			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-			// Rotate(turnPos.x, turnPos.y, angle);
-
-			// i++;
-			// vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
-			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-			// i++;
-		 //}
-
+		 vertexes[0].pos = Vector3(center_x, center_y, 0.5f);
+		 vertexes[0].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		 Vector3 turnPos = Vector3(start_x, start_y, angle);
+		 for (int i = 1; i < 362; i++)
+		 {
+			 vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
+			 vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+			 Rotate(turnPos.x, turnPos.y, angle);
+		 }
 
 		 LoadBuffer();
 		 LoadShader();

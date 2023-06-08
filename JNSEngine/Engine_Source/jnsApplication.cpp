@@ -53,7 +53,6 @@ namespace jns
 
 		graphicDevice->Draw();
 		mScene->Render();
-		graphicDevice->GraphicsInfoUpdate();
 		graphicDevice->Present();
 	}
 	void Application::SetWindow(HWND hwnd, UINT width, UINT height)

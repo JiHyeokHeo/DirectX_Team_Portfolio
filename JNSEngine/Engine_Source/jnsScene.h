@@ -17,5 +17,6 @@ namespace jns
 
 	private:
 		std::vector<GameObject*> mGameObjects;
+		float mTime;
 	};
 }	

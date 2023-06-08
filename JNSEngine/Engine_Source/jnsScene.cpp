@@ -1,5 +1,7 @@
 #include "jnsScene.h"
-
+#include "jnsPlayer.h"
+#include "jnsTime.h"
+#include "jnsMonster.h"
 
 namespace jns
 {
@@ -12,15 +14,16 @@ namespace jns
 	void Scene::Initialize()
 	{
 		// 여기서 초기 게임 맵데이터를 세팅해줘야 한다.
-		GameObject* mGameObject = new GameObject();
-		mGameObject->SetPos(Vector2(-0.1f, -0.1f));
-		GameObject* mGameObject2 = new GameObject();
-		mGameObjects.push_back(mGameObject);
-		mGameObjects.push_back(mGameObject2);
+		Player* mPlayer = new Player();
+		mGameObjects.push_back(mPlayer);
+
+		Monster* mMonster = new Monster();
+		mGameObjects.push_back(mMonster);
+		
+
 	}
 	void Scene::Update()
 	{
-
 		for (GameObject* gameObj : mGameObjects)
 		{
 			gameObj->Update();

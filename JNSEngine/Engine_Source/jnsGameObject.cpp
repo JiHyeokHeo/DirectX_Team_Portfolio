@@ -19,22 +19,22 @@ namespace jns
 	void GameObject::Update()
 	{
 
-		// 렌더
 	}
 	void GameObject::LateUpdate()
 	{
 	}
 	void GameObject::Render()
 	{
-		////상수버퍼로 위치정보 크기정보, 색깔, 업데이트 해줘야한다.
-		Vector4 color(1.0f, 1.0f, 1.0f, 1.0f);
+		Vector4 color(mRGB.x, mRGB.y, mRGB.z, 1.0f);
 		renderer::colorConstanttBuffer->SetData(&color);
 		renderer::colorConstanttBuffer->Bind(eShaderStage::VS);
 
 		Vector4 pos(mPos.x, mPos.y, 0.0f, 1.0f);
 		renderer::transformconstantBuffer->SetData(&pos);
 		renderer::transformconstantBuffer->Bind(eShaderStage::VS);
-		
+		renderer::mesh->BindBuffer();
+		renderer::shader->Binds();
+		graphics::GetDevice()->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
 	}
 	
 }

@@ -24,10 +24,13 @@ namespace jns
 		
 		void SetPos(Vector2 pos) { mPos = pos; }
 		Vector2 GetPos() { return mPos; }
+
+		void SetRGB(Vector3 rgb) { mRGB = rgb; }
 	private:
 		eState mState;
 		//std::vector<Component*> mComponents;
 		Vector2 mPos;
+		Vector3 mRGB;
 	};
 
 }

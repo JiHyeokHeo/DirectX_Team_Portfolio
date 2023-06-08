@@ -3,17 +3,18 @@
 
 namespace jns
 {
-	class Player : public GameObject
+	class Monster : public GameObject
 	{
 	public:
-		Player();
-		~Player();
+		Monster();
+		~Monster();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
 		virtual void LateUpdate() override;
 		virtual void Render() override;
-	private:
 
+	private:
+		Vector2 mMonsterPos;
 	};
 }

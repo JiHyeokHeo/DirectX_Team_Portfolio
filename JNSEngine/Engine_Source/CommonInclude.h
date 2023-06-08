@@ -78,3 +78,12 @@ constexpr bool has_flag(E lhs, E rhs)
 {
 	return (lhs & rhs) == rhs;
 }
+
+
+#include <random>
+std::mt19937 gen{ std::random_device{}() };
+// Define a uniform distribution between 0 and 1
+std::uniform_real_distribution<float> dist{ 0.0f, 1.0f };
+
+std::uniform_real_distribution<> disX(-1.0f, 1.0f);
+std::uniform_real_distribution<> disY(-1.0f, 1.0f);

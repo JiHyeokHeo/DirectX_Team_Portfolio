@@ -30,6 +30,7 @@ VSOut main(VSIn In)
     Out.Pos.x += Pos.x;
     Out.Pos.y += Pos.y;
 	Out.Color = In.Color;
-
+    Out.Color = Color;
+	
 	return Out;
 }

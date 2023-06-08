@@ -111,6 +111,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsPlayer.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsMonster.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp">
@@ -162,6 +165,9 @@
       <Filter>GameObject\Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsPlayer.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsMonster.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
