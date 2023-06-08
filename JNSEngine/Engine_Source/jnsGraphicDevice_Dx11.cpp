@@ -329,4 +329,10 @@ namespace jns::graphics
 	{
 		mSwapChain->Present(0, 0);
 	}
+	void GraphicDevice_Dx11::GraphicsInfoUpdate()
+	{
+		renderer::mesh->BindBuffer();
+		renderer::shader->Binds();
+		graphics::GetDevice()->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
+	}
 }

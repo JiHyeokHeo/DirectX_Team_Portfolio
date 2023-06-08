@@ -9,7 +9,8 @@ namespace renderer
 	Vertex vertexes[361] = {};
 	jns::Mesh* mesh = nullptr;
 	jns::Shader* shader = nullptr;
-	jns::graphics::ConstantBuffer* constantBuffer = nullptr;
+	jns::graphics::ConstantBuffer* transformconstantBuffer;
+	jns::graphics::ConstantBuffer* colorConstanttBuffer;
 
 	 void SetupState()
 	 {
@@ -53,14 +54,11 @@ namespace renderer
 		 mesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
 		 // Constant Buffer
-		 D3D11_BUFFER_DESC triangleCSDesc = {};
-		 triangleCSDesc.ByteWidth = sizeof(Vector4);
-		 triangleCSDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
-		 triangleCSDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
-		 triangleCSDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		 transformconstantBuffer = new jns::graphics::ConstantBuffer(eCBType::Transform);
+		 transformconstantBuffer->Create(sizeof(Vector4));
 
-		 constantBuffer = new jns::graphics::ConstantBuffer(eCBType::Transform);
-		 constantBuffer->Create(sizeof(Vector4));
+		 colorConstanttBuffer = new jns::graphics::ConstantBuffer(eCBType::Color);
+		 colorConstanttBuffer->Create(sizeof(Vector4));
 
 		 //Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
 		 //constantBuffer->SetData(&pos);
@@ -78,13 +76,13 @@ namespace renderer
 	 void Initialize()
 	 {
 		 vertexes[0].pos = Vector3(0.0f, 0.5f, 0.0f);
-		 vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		 vertexes[0].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		 vertexes[1].pos = Vector3(0.5f, -0.5f, 0.0f);
-		 vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		 vertexes[1].color = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 
 		 vertexes[2].pos = Vector3(-0.5f, -0.5f, 0.0f);
-		 vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		 vertexes[2].color = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 
 		 //vertexes[3].pos = Vector3(-0.8f, 0.8f, 0.5f);
 		 //vertexes[3].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -150,7 +148,10 @@ namespace renderer
 	 {
 		 delete mesh;
 		 delete shader;
-		 delete constantBuffer;
+		 delete transformconstantBuffer;
+		 delete colorConstanttBuffer;
 	 }
+
+	
 }
 

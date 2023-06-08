@@ -3,6 +3,7 @@
 
 namespace jns
 {
+	using namespace math;
 	class GameObject : public Entity
 	{
 	public:
@@ -21,11 +22,11 @@ namespace jns
 		virtual void LateUpdate();
 		virtual void Render();
 		
+	
 	private:
 		eState mState;
 		//std::vector<Component*> mComponents;
-		float y;
-		float x;
+		
 	};
 
 }

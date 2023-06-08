@@ -19,7 +19,8 @@ namespace renderer
 	extern Vertex vertexes[];
 	extern jns::Mesh* mesh;
 	extern jns::Shader* shader;
-	extern jns::graphics::ConstantBuffer* constantBuffer;
+	extern jns::graphics::ConstantBuffer* transformconstantBuffer;
+	extern jns::graphics::ConstantBuffer* colorConstanttBuffer;
 
 	void Initialize();
 	void Release();

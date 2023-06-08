@@ -15,6 +15,10 @@ cbuffer Transform : register(b0)
     float4 Pos;
 }
 
+cbuffer Color : register(b1)
+{
+    float4 Color;
+}
 
 VSOut main(VSIn In)
 {

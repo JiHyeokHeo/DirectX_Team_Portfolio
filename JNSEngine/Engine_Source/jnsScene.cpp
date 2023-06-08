@@ -13,7 +13,10 @@ namespace jns
 	{
 		// 여기서 초기 게임 맵데이터를 세팅해줘야 한다.
 		GameObject* mGameObject = new GameObject();
+		mGameObject->SetPos(Vector2(-0.1f, -0.1f));
+		GameObject* mGameObject2 = new GameObject();
 		mGameObjects.push_back(mGameObject);
+		mGameObjects.push_back(mGameObject2);
 	}
 	void Scene::Update()
 	{

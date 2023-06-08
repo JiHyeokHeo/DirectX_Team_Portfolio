@@ -43,6 +43,8 @@ namespace jns::graphics
 		void Present();
 
 
+		void GraphicsInfoUpdate();
+
 	private:
 		// 실제 그래픽카드 하드웨어 객체
 		Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
