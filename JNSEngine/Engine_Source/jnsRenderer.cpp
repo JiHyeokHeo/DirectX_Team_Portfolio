@@ -67,7 +67,7 @@ namespace renderer
 
 		 // Constant Buffer
 		 transformconstantBuffer = new jns::graphics::ConstantBuffer(eCBType::Transform);
-		 transformconstantBuffer->Create(sizeof(Vector4)*2);
+		 transformconstantBuffer->Create(sizeof(Vector4));
 
 		 colorConstanttBuffer = new jns::graphics::ConstantBuffer(eCBType::Color);
 		 colorConstanttBuffer->Create(sizeof(Vector4));
@@ -88,7 +88,7 @@ namespace renderer
 	 void Initialize()
 	 {
 		 float start_x = 0.0f;
-		 float start_y = 0.1f;
+		 float start_y = 1.0f;
 		 float angle = -1.0f;
 		 float center_x = 0.0f;
 		 float center_y = 0.0f;

@@ -37,6 +37,7 @@ namespace jns
 		renderer::colorConstanttBuffer->SetData(&color);
 		renderer::colorConstanttBuffer->Bind(eShaderStage::VS);
 
+		
 		renderer::transformconstantBuffer->SetData(&mStatus);
 		renderer::transformconstantBuffer->Bind(eShaderStage::VS);
 

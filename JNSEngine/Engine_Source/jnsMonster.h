@@ -15,8 +15,6 @@ namespace jns
 		virtual void Render() override;
 
 	private:
-		Vector2 mMonsterPos;
 		Vector3 mRGB;
-		int mMonsterScale;
 	};
 }

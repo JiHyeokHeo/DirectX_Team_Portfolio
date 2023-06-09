@@ -12,8 +12,9 @@ struct VSOut
 
 cbuffer Transform : register(b0)
 {
-	float Scale; 
-    float4 Pos;
+	float Scale;
+	float2 Pos;
+	float dummy;
 }
 
 cbuffer Color : register(b1)
@@ -31,6 +32,8 @@ VSOut main(VSIn In)
     //Out.Pos.x += Pos.x;
 	Out.Pos.xy *= Scale;
 	Out.Pos.xy += Pos.xy;
+	Out.Pos.x /= 800.0f;
+	Out.Pos.y /= 440.0f;
 	Out.Color = In.Color;
     Out.Color = Color;
 	

@@ -11,6 +11,7 @@ namespace jns
 		{
 			float mScale;
 			Vector2 mPos;
+			float dummy;
 		};
 
 		enum eState
@@ -36,7 +37,7 @@ namespace jns
 		
 		mGameObjectStatus GetStatus () { return mStatus; }
 		Vector2 GetPos() { return mStatus.mPos; }
-
+		
 	public:
 		void PipeLineRender();
 

@@ -17,13 +17,18 @@ namespace jns
 		Player* mPlayer = new Player();
 		mGameObjects.push_back(mPlayer);
 
-		Monster* mMonster = new Monster();
-		mGameObjects.push_back(mMonster);
+		for (int i = 0; i < 100; i++)
+		{
+			Monster* mMonster = new Monster();
+			mGameObjects.push_back(mMonster);
+		}
 		
+		FindTarget(mPlayer);
 
 	}
 	void Scene::Update()
 	{
+		CollisionCheck(mTarget);
 		for (GameObject* gameObj : mGameObjects)
 		{
 			gameObj->Update();
@@ -39,4 +44,27 @@ namespace jns
 			gameObj->Render();
 		}
 	}
+
+	void Scene::CollisionCheck(GameObject* Target)
+	{
+		for (GameObject* gameObj : mGameObjects)
+		{
+			if (gameObj->GetName() == L"Player")
+				continue;
+			
+			InterSect(Target, gameObj);
+		}
+	}
+
+	void Scene::InterSect(GameObject* Target, GameObject* CheckList)
+	{
+		Vector2 mTargetDistance = Target->GetPos();
+		Vector2 mCheckList = CheckList->GetPos();
+
+		Vector2 monsterDistanceBetween = mTargetDistance - mCheckList;
+
+		//labs();
+		
+	}
+
 }

@@ -5,14 +5,16 @@ namespace jns
 {
 	Monster::Monster()
 	{
+		Vector2 mMonsterPos = {};
 		mMonsterPos.x = disX(gen);
-		mMonsterPos.y = disX(gen);
+		mMonsterPos.y = disY(gen);
+
 		mRGB.x = rangecolorR(gen);
 		mRGB.y = rangecolorG(gen);
 		mRGB.z = rangecolorB(gen);
-		SetPos(mMonsterPos);
 		SetRGB(mRGB);
-		SetScale(1.0f);
+		SetPos(mMonsterPos);
+		SetScale(50.0f);
 	}
 	Monster::~Monster()
 	{

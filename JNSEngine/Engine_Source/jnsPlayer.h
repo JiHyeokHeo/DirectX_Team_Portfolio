@@ -19,6 +19,6 @@ namespace jns
 		void mousemove(float power);
 	private:
 		Vector2 mousePos;
-		int mPlayerScale;
+		Vector2 mCenterPos;
 	};
 }

@@ -6,8 +6,11 @@
 namespace jns
 {
 	Player::Player()
+		: mousePos(0.0f, 0.0f)
 	{
-		SetScale(2.0f);
+		SetPos(Vector2(0.0f, 0.0f));
+		SetName(L"Player");
+		SetScale(70.0f);
 	}
 	Player::~Player()
 	{
@@ -32,14 +35,13 @@ namespace jns
 		GameObject::Render();
 	}
 
-
 	void Player::mouseposition()
 	{
 		mousePos = Input::GetMousePos();
 		D3D11_VIEWPORT viewPort = graphics::GetDevice()->GetViewPort();
 		mousePos.x -= viewPort.Width / 2;
 		mousePos.y -= viewPort.Height / 2;
-		mousePos.Normalize();
+		//mousePos.Normalize();
 	}
 	void Player::mousemove(float power)
 	{

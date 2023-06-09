@@ -15,8 +15,14 @@ namespace jns
 		virtual void LateUpdate();
 		virtual void Render();
 
+			
+	public:
+		void CollisionCheck(GameObject* Target);
+		void FindTarget(GameObject* Target) { mTarget = Target; }
+		void InterSect(GameObject* Target, GameObject* CheckList);
 	private:
 		std::vector<GameObject*> mGameObjects;
 		float mTime;
+		GameObject* mTarget;
 	};
 }	
