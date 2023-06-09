@@ -18,7 +18,11 @@ namespace jns
 	}
 	void GameObject::Update()
 	{
+		// 이것이 행동 트리라고 하는 것이다. (수민님의 조언)
+		if (CheckTime())
+			return;
 
+		
 	}
 	void GameObject::LateUpdate()
 	{
@@ -46,7 +50,27 @@ namespace jns
 		renderer::shader->Binds();
 		graphics::GetDevice()->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
 	}
+
+
 #pragma endregion
 
-	
+	bool GameObject::CheckTime()
+	{
+		if (mTime >= 3.0f)
+			return false;
+
+
+		if (this->GetState() == GameObject::Paused)
+		{
+			CheckPauseTime();
+			return true;
+		}
+
+		return false;
+	}
+	void GameObject::CheckPauseTime()
+	{
+		mTime += Time::DeltaTime();
+
+	}
 }

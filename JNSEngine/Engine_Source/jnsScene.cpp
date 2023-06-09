@@ -28,6 +28,16 @@ namespace jns
 	}
 	void Scene::Update()
 	{
+
+		for (GameObject* gameObj : mGameObjects)
+		{
+			if (gameObj->GetState() == GameObject::Paused)
+			{
+
+				gameObj->SetState(GameObject::Active);
+			}
+		}
+
 		CollisionCheck(mTarget);
 		for (GameObject* gameObj : mGameObjects)
 		{
@@ -36,13 +46,7 @@ namespace jns
 	}
 	void Scene::LateUpdate()
 	{
-		//for (GameObject* gameObj : mGameObjects)
-		//{
-		//	if (gameObj->GetState() == GameObject::Paused)
-		//	{
-		//		gameObj->SetState(GameObject::Active);
-		//	}
-		//}
+
 	}
 	void Scene::Render()
 	{

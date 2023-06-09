@@ -46,12 +46,15 @@ namespace jns
 		void SetIsCol(bool isCol) { isCollider = isCol; }
 	public:
 		void PipeLineRender();
+		bool CheckTime();
+		void CheckPauseTime();
 
 	private:
 		eState mState;
 		mGameObjectStatus mStatus;
 		Vector3 mRGB;
 		bool isCollider;
+		float mTime;
 		//std::vector<Component*> mComponents;
 	};
 
