@@ -2,6 +2,7 @@
 #include "jnsPlayer.h"
 #include "jnsTime.h"
 #include "jnsMonster.h"
+#include "jnsGameObject.h"
 
 namespace jns
 {
@@ -24,7 +25,6 @@ namespace jns
 		}
 		
 		FindTarget(mPlayer);
-
 	}
 	void Scene::Update()
 	{
@@ -41,6 +41,7 @@ namespace jns
 	{
 		for (GameObject* gameObj : mGameObjects)
 		{
+			if(gameObj->GetState() == GameObject::Active)
 			gameObj->Render();
 		}
 	}
@@ -60,11 +61,36 @@ namespace jns
 	{
 		Vector2 mTargetDistance = Target->GetPos();
 		Vector2 mCheckList = CheckList->GetPos();
-
-		Vector2 monsterDistanceBetween = mTargetDistance - mCheckList;
-
-		//labs();
 		
+		// 거리 
+		float mBetweenDistance = sqrt(powf(mTargetDistance.x - mCheckList.x, 2) + powf(mTargetDistance.y - mCheckList.y, 2));
+		//float mBetweenDistance = Vector2::Distance(mTargetDistance, mCheckList);
+		
+		// 반지름
+		float mTargetRadius = Target->GetScale();
+		float mCheckListRadius = CheckList->GetScale();
+
+		float mRadiusDifference = abs(mTargetRadius + mCheckListRadius);
+
+		if (mBetweenDistance <= mRadiusDifference)
+		{
+			CheckList->SetState(GameObject::Paused);
+			CollisionEnter(Target);
+		}
+		else
+		{
+			CollisionOut(Target);
+		}
+	}
+
+	void Scene::CollisionEnter(GameObject* target)
+	{
+		target->SetCol(true);
+	}
+
+	void Scene::CollisionOut(GameObject* target)
+	{
+		target->SetCol(false);
 	}
 
 }

@@ -7,10 +7,12 @@ namespace jns
 {
 	Player::Player()
 		: mousePos(0.0f, 0.0f)
+		, mData(PlayerData{ 4.0f })
 	{
 		SetPos(Vector2(0.0f, 0.0f));
 		SetName(L"Player");
-		SetScale(70.0f);
+		
+		SetScale(50.0f);
 	}
 	Player::~Player()
 	{
@@ -21,8 +23,14 @@ namespace jns
 	}
 	void Player::Update()
 	{
+	/*	if (GetIsCol() == true)
+		{
+			mScale += 0.5f;
+		}*/
+
 		mouseposition();
 		mousemove(0.5f);
+		//SetScale(mScale);
 
 		GameObject::Update();
 	}
@@ -38,16 +46,17 @@ namespace jns
 	void Player::mouseposition()
 	{
 		mousePos = Input::GetMousePos();
-		D3D11_VIEWPORT viewPort = graphics::GetDevice()->GetViewPort();
-		mousePos.x -= viewPort.Width / 2;
-		mousePos.y -= viewPort.Height / 2;
-		//mousePos.Normalize();
+		mousePos.y = 900.0f - mousePos.y;
+		mousePos = mousePos - Vector2{ 800.0f, 450.0f };
 	}
 	void Player::mousemove(float power)
 	{
-		Vector2 mPos = GetPos();
-		mPos.x += power * mousePos.x * Time::DeltaTime();
-		mPos.y -= power * mousePos.y * Time::DeltaTime();
+		float Distance = Vector2::Distance(GetPos(), mousePos);
+		math::Vector2 mdirection = mousePos - GetPos();
+
+		mdirection.Normalize();
+
+		math::Vector2 mPos = GetPos() + mdirection * Distance * Time::DeltaTime();
 		SetPos(mPos);
 	}
 }

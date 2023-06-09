@@ -16,10 +16,15 @@ namespace jns
 		virtual void Render();
 
 			
+
 	public:
 		void CollisionCheck(GameObject* Target);
 		void FindTarget(GameObject* Target) { mTarget = Target; }
 		void InterSect(GameObject* Target, GameObject* CheckList);
+
+		void CollisionEnter(GameObject* Target);
+		void CollisionOut(GameObject* Target);
+
 	private:
 		std::vector<GameObject*> mGameObjects;
 		float mTime;

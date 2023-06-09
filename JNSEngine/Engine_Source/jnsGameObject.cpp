@@ -30,6 +30,7 @@ namespace jns
 	}
 
 
+#pragma region PipeLine
 
 	void GameObject::PipeLineRender()
 	{
@@ -45,5 +46,7 @@ namespace jns
 		renderer::shader->Binds();
 		graphics::GetDevice()->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
 	}
+#pragma endregion
+
 	
 }

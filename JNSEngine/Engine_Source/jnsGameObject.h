@@ -34,10 +34,15 @@ namespace jns
 		void SetPos(Vector2 pos) { mStatus.mPos = pos; }
 		void SetScale(float scale) { mStatus.mScale = scale; }
 		void SetRGB(Vector3 rgb) { mRGB = rgb; }
-		
+		void SetState(eState state) { mState = state; }
+		eState GetState() { return mState; }
+		void SetCol(bool isCol) { isCollider = isCol; }
+
 		mGameObjectStatus GetStatus () { return mStatus; }
 		Vector2 GetPos() { return mStatus.mPos; }
-		
+		float GetScale() { return mStatus.mScale; }
+
+		bool GetIsCol() { return isCollider; }
 	public:
 		void PipeLineRender();
 
@@ -45,7 +50,7 @@ namespace jns
 		eState mState;
 		mGameObjectStatus mStatus;
 		Vector3 mRGB;
-
+		bool isCollider;
 		//std::vector<Component*> mComponents;
 	};
 

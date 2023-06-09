@@ -14,7 +14,7 @@ namespace jns
 		mRGB.z = rangecolorB(gen);
 		SetRGB(mRGB);
 		SetPos(mMonsterPos);
-		SetScale(50.0f);
+		SetScale(10.0f);
 	}
 	Monster::~Monster()
 	{
