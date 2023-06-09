@@ -67,7 +67,7 @@ namespace renderer
 
 		 // Constant Buffer
 		 transformconstantBuffer = new jns::graphics::ConstantBuffer(eCBType::Transform);
-		 transformconstantBuffer->Create(sizeof(Vector4));
+		 transformconstantBuffer->Create(sizeof(Vector4)*2);
 
 		 colorConstanttBuffer = new jns::graphics::ConstantBuffer(eCBType::Color);
 		 colorConstanttBuffer->Create(sizeof(Vector4));

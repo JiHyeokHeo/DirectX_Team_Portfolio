@@ -7,6 +7,7 @@ namespace jns
 {
 	Player::Player()
 	{
+		SetScale(2.0f);
 	}
 	Player::~Player()
 	{

@@ -8,7 +8,6 @@ namespace jns
 {
 	GameObject::GameObject()
 		:mState(GameObject::Active)
-		,mScale(1)
 	{
 	}
 	GameObject::~GameObject()
@@ -23,16 +22,24 @@ namespace jns
 	}
 	void GameObject::LateUpdate()
 	{
+
 	}
 	void GameObject::Render()
+	{
+		PipeLineRender();
+	}
+
+
+
+	void GameObject::PipeLineRender()
 	{
 		Vector4 color(mRGB.x, mRGB.y, mRGB.z, 1.0f);
 		renderer::colorConstanttBuffer->SetData(&color);
 		renderer::colorConstanttBuffer->Bind(eShaderStage::VS);
 
-		Vector4 pos(mPos.x * mScale, mPos.y * mScale, 0.0f, 1.0f);
-		renderer::transformconstantBuffer->SetData(&pos);
+		renderer::transformconstantBuffer->SetData(&mStatus);
 		renderer::transformconstantBuffer->Bind(eShaderStage::VS);
+
 		renderer::mesh->BindBuffer();
 		renderer::shader->Binds();
 		graphics::GetDevice()->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
