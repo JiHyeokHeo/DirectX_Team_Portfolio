@@ -13,7 +13,12 @@ namespace jns
 		virtual void Update() override;
 		virtual void LateUpdate() override;
 		virtual void Render() override;
-	private:
 
+	public:
+		void mouseposition();
+		void mousemove(float power);
+	private:
+		Vector2 mousePos;
+		int mPlayerScale;
 	};
 }

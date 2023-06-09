@@ -1,6 +1,7 @@
 #include "jnsPlayer.h"
 #include "jnsInput.h"
 #include "jnsTime.h"
+#include "jnsGraphicDevice_Dx11.h"
 
 namespace jns
 {
@@ -16,17 +17,8 @@ namespace jns
 	}
 	void Player::Update()
 	{
-		Vector2 mousePos = Input::GetMousePos();
-		mousePos.x -= 800.0f;
-		mousePos.y -= 400.0f;
-		mousePos.Normalize();
-
-		Vector2 mPos = GetPos();
-
-		mPos.x += 0.5f * mousePos.x * Time::DeltaTime();
-		mPos.y -= 0.5f * mousePos.y * Time::DeltaTime();
-
-		SetPos(mPos);
+		mouseposition();
+		mousemove(0.5f);
 
 		GameObject::Update();
 	}
@@ -37,5 +29,22 @@ namespace jns
 	void Player::Render()
 	{
 		GameObject::Render();
+	}
+
+
+	void Player::mouseposition()
+	{
+		mousePos = Input::GetMousePos();
+		D3D11_VIEWPORT viewPort = graphics::GetDevice()->GetViewPort();
+		mousePos.x -= viewPort.Width / 2;
+		mousePos.y -= viewPort.Height / 2;
+		mousePos.Normalize();
+	}
+	void Player::mousemove(float power)
+	{
+		Vector2 mPos = GetPos();
+		mPos.x += power * mousePos.x * Time::DeltaTime();
+		mPos.y -= power * mousePos.y * Time::DeltaTime();
+		SetPos(mPos);
 	}
 }

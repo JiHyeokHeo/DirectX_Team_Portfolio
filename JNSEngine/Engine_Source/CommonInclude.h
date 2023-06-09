@@ -87,3 +87,6 @@ std::uniform_real_distribution<float> dist{ 0.0f, 1.0f };
 
 std::uniform_real_distribution<> disX(-1.0f, 1.0f);
 std::uniform_real_distribution<> disY(-1.0f, 1.0f);
+std::uniform_real_distribution<> rangecolorR(0.0f, 1.0f);
+std::uniform_real_distribution<> rangecolorG(0.0f, 1.0f);
+std::uniform_real_distribution<> rangecolorB(0.0f, 1.0f);

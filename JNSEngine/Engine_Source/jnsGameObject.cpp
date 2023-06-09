@@ -8,6 +8,7 @@ namespace jns
 {
 	GameObject::GameObject()
 		:mState(GameObject::Active)
+		,mScale(1)
 	{
 	}
 	GameObject::~GameObject()
@@ -29,7 +30,7 @@ namespace jns
 		renderer::colorConstanttBuffer->SetData(&color);
 		renderer::colorConstanttBuffer->Bind(eShaderStage::VS);
 
-		Vector4 pos(mPos.x, mPos.y, 0.0f, 1.0f);
+		Vector4 pos(mPos.x * mScale, mPos.y * mScale, 0.0f, 1.0f);
 		renderer::transformconstantBuffer->SetData(&pos);
 		renderer::transformconstantBuffer->Bind(eShaderStage::VS);
 		renderer::mesh->BindBuffer();

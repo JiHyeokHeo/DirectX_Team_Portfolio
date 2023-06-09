@@ -16,5 +16,7 @@ namespace jns
 
 	private:
 		Vector2 mMonsterPos;
+		Vector3 mRGB;
+		int mMonsterScale;
 	};
 }

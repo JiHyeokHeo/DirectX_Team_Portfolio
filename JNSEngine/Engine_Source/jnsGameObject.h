@@ -31,6 +31,7 @@ namespace jns
 		//std::vector<Component*> mComponents;
 		Vector2 mPos;
 		Vector3 mRGB;
+		int mScale;
 	};
 
 }

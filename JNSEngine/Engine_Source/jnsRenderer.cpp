@@ -88,7 +88,7 @@ namespace renderer
 	 void Initialize()
 	 {
 		 float start_x = 0.0f;
-		 float start_y = 0.5f;
+		 float start_y = 0.1f;
 		 float angle = -1.0f;
 		 float center_x = 0.0f;
 		 float center_y = 0.0f;
