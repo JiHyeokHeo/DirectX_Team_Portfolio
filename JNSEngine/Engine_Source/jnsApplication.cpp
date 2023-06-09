@@ -52,7 +52,7 @@ namespace jns
 		Time::Render();
 
 		graphicDevice->Draw();
- mScene->Render();
+		mScene->Render();
 		graphicDevice->Present();
 	}
 	void Application::SetWindow(HWND hwnd, UINT width, UINT height)

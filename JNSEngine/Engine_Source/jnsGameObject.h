@@ -43,6 +43,7 @@ namespace jns
 		float GetScale() { return mStatus.mScale; }
 
 		bool GetIsCol() { return isCollider; }
+		void SetIsCol(bool isCol) { isCollider = isCol; }
 	public:
 		void PipeLineRender();
 

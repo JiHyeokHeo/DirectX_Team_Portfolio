@@ -25,6 +25,10 @@ namespace jns
 		void CollisionEnter(GameObject* Target);
 		void CollisionOut(GameObject* Target);
 
+
+		void SetRandomPos();
+
+
 	private:
 		std::vector<GameObject*> mGameObjects;
 		float mTime;

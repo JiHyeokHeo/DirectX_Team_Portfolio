@@ -8,6 +8,7 @@ namespace jns
 	Player::Player()
 		: mousePos(0.0f, 0.0f)
 		, mData(PlayerData{ 4.0f })
+		, mScale(1.0f)
 	{
 		SetPos(Vector2(0.0f, 0.0f));
 		SetName(L"Player");
@@ -23,14 +24,17 @@ namespace jns
 	}
 	void Player::Update()
 	{
-	/*	if (GetIsCol() == true)
+		mScale = GetScale();
+	
+		if (GetIsCol() == true)
 		{
-			mScale += 0.5f;
-		}*/
+			mScale += 0.005f;
+			SetScale(mScale);
+			SetIsCol(false);
+		}
 
 		mouseposition();
-		mousemove(0.5f);
-		//SetScale(mScale);
+		mousemove(0.0f);
 
 		GameObject::Update();
 	}
@@ -46,16 +50,21 @@ namespace jns
 	void Player::mouseposition()
 	{
 		mousePos = Input::GetMousePos();
+
+		// api 마우스 좌표에서 dx좌표로의 전환
 		mousePos.y = 900.0f - mousePos.y;
 		mousePos = mousePos - Vector2{ 800.0f, 450.0f };
 	}
 	void Player::mousemove(float power)
 	{
+		// 거리를 찾고
 		float Distance = Vector2::Distance(GetPos(), mousePos);
+		
+		// 방향 벡터
 		math::Vector2 mdirection = mousePos - GetPos();
-
 		mdirection.Normalize();
-
+		
+		// 
 		math::Vector2 mPos = GetPos() + mdirection * Distance * Time::DeltaTime();
 		SetPos(mPos);
 	}

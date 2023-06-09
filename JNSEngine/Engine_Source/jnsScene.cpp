@@ -36,6 +36,13 @@ namespace jns
 	}
 	void Scene::LateUpdate()
 	{
+		//for (GameObject* gameObj : mGameObjects)
+		//{
+		//	if (gameObj->GetState() == GameObject::Paused)
+		//	{
+		//		gameObj->SetState(GameObject::Active);
+		//	}
+		//}
 	}
 	void Scene::Render()
 	{
@@ -90,7 +97,9 @@ namespace jns
 
 	void Scene::CollisionOut(GameObject* target)
 	{
-		target->SetCol(false);
+		//target->SetCol(false);
 	}
-
+	void Scene::SetRandomPos()
+	{
+	}
 }
