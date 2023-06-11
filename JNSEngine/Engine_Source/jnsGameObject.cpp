@@ -7,7 +7,8 @@
 namespace jns
 {
 	GameObject::GameObject()
-		: mState(eState::Active)
+		: mState(eState::Active),
+		radius(20.0f)
 	{
 	}
 
@@ -29,29 +30,21 @@ namespace jns
 			case(GameObject::Type::Player):
 			{
 				Move();
-
-				startY = 300.f;
-				startX = -700.0f;
-				
-				sizeX = 50.0f;
-				sizeY = 50.0f;
 			}
 			break;
-			case(GameObject::Type::obstacle):
+			case(GameObject::Type::Cell):
 			{
-				sizeX = 20.f;
-				sizeY = 20.f;
+
 			}
 			break;
 		}
 
-		radius = sizeX;
 		Pos = Vector2(startX + moveX, startY + moveY);
 	}
 
 	void GameObject::Move()
 	{
-			if (Input::GetKey(eKeyCode::W))
+		if (Input::GetKey(eKeyCode::W))
 		{
 			moveY += 1.5f;
 		}
@@ -78,7 +71,7 @@ namespace jns
 		//상수버퍼로 위치정보 크기정보, 색깔, 업데이트 해줘야한다.
 
 		object_status.Pos = Vector4(startX + moveX, startY + moveY, 0.0f, 0.0f);
-		object_status.Size = Vector4(sizeX, sizeY, 0.0f, 0.0f);
+		object_status.Size = Vector4(radius, radius, 0.0f, 0.0f);
 
 		Vector4 color(color1,color2,color3, 1.0f);
 

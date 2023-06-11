@@ -15,8 +15,19 @@ namespace jns
 		virtual void LateUpdate();
 		virtual void Render();
 
+		float distance(const Vector2& a, const Vector2& b);
+
+		void Instantiate_Cell(int n);
+
+		void Destroy();
+
 	private:
 		std::vector<GameObject*> mGameObjects;
+
+		int death = 0;
+
 		GameObject* player;
+		int cell_num;
+		float playTime;
 	};
 }

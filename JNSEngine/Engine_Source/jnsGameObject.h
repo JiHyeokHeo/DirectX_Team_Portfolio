@@ -23,7 +23,7 @@ namespace jns
 		enum Type
 		{
 			Player,
-			obstacle,
+			Cell,
 			None,
 		};
 
@@ -61,6 +61,24 @@ namespace jns
 			startY = y;
 			startX = x;
 		}
+		void set_Radius(float r)
+		{
+			radius = r;
+		}
+		void Radius_up(float r)
+		{
+			radius += r;
+		}
+		Vector2 get_Pos()
+		{
+			return Pos;
+		}
+
+		float get_Radius()
+		{
+			return radius;
+		}
+
 		void set_Color(float a, float b, float c)
 		{
 			color1 = a;
@@ -77,9 +95,6 @@ namespace jns
 
 		float startY = 0.0f;
 		float startX = 0.0f;;
-
-		float sizeY;
-		float sizeX;
 
 		float color1;
 		float color2;
