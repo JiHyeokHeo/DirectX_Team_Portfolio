@@ -7,6 +7,8 @@
 namespace jns
 {
 	Scene::Scene()
+		: mTime(0.0f)
+		, mTarget(nullptr)
 	{
 	}
 	Scene::~Scene()
@@ -18,11 +20,11 @@ namespace jns
 		Player* mPlayer = new Player();
 		mGameObjects.push_back(mPlayer);
 
-		for (int i = 0; i < 100; i++)
-		{
+		/*for (int i = 0; i < 100; i++)
+		{*/
 			Monster* mMonster = new Monster();
 			mGameObjects.push_back(mMonster);
-		}
+		/*}*/
 		
 		FindTarget(mPlayer);
 	}
@@ -31,9 +33,8 @@ namespace jns
 
 		for (GameObject* gameObj : mGameObjects)
 		{
-			if (gameObj->GetState() == GameObject::Paused)
+			if (gameObj->GetState() == GameObject::Paused && gameObj->GetTime() >=3.0f)
 			{
-
 				gameObj->SetState(GameObject::Active);
 			}
 		}
@@ -64,6 +65,7 @@ namespace jns
 			if (gameObj->GetName() == L"Player")
 				continue;
 			
+			if (gameObj->GetState() == GameObject::Active)
 			InterSect(Target, gameObj);
 		}
 	}

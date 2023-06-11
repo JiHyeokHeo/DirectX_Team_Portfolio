@@ -8,6 +8,7 @@ namespace jns
 {
 	GameObject::GameObject()
 		:mState(GameObject::Active)
+		,mTime(0.0f)
 	{
 	}
 	GameObject::~GameObject()
@@ -57,7 +58,10 @@ namespace jns
 	bool GameObject::CheckTime()
 	{
 		if (mTime >= 3.0f)
+		{
+			mTime = 0;
 			return false;
+		}
 
 
 		if (this->GetState() == GameObject::Paused)

@@ -44,6 +44,8 @@ namespace jns
 
 		bool GetIsCol() { return isCollider; }
 		void SetIsCol(bool isCol) { isCollider = isCol; }
+		
+		float GetTime() { return mTime; }
 	public:
 		void PipeLineRender();
 		bool CheckTime();
