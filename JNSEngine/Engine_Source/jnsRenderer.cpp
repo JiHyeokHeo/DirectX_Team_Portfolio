@@ -1,193 +1,101 @@
 #include "jnsRenderer.h"
-#include "jnsMath.h"
-#include "jnsInput.h"
-#include "jnsTime.h"
 
+#define ver_Num 30
 
-namespace jns::renderer
+namespace renderer
 {
-	Vertex vertexes[4] = {};
+	using namespace jns;
+	using namespace jns::graphics;
+	Vertex vertexes[ver_Num] = {};
 
+	std::vector<jns::graphics::ConstantBuffer*> constantBuffers;
 
-
-	// Input Layout (정점 정보)
-	ID3D11InputLayout* triangleLayout = nullptr;
-
-	// Vertex Buffer
 	jns::Mesh* mesh = nullptr;
-	
-	//ID3D11Buffer* triangleBuffer = nullptr;
-	//ID3D11Buffer* triangleIdxBuffer = nullptr;
-
-	ID3D11Buffer* triangleConstantBuffer = nullptr;
-
-
 	jns::Shader* shader = nullptr;
-	//// error blob
-	//ID3DBlob* errorBlob = nullptr;
 
-	//// Vertex Shader code -> Binary Code
-	//ID3DBlob* triangleVSBlob = nullptr;
+	void SetupState()
+	{
+		// Input layout 정점 구조 정보를 넘겨줘야한다.
+		D3D11_INPUT_ELEMENT_DESC arrLayout[2] = {};
 
-	//// Vertex Shader
-	//ID3D11VertexShader* triangleVSShader = nullptr;
+		arrLayout[0].AlignedByteOffset = 0;
+		arrLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		arrLayout[0].InputSlot = 0;
+		arrLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayout[0].SemanticName = "POSITION";
+		arrLayout[0].SemanticIndex = 0;
 
-	//// Pixel Shader code -> Binary Code
-	//ID3DBlob* trianglePSBlob = nullptr;
+		arrLayout[1].AlignedByteOffset = 12;
+		arrLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		arrLayout[1].InputSlot = 0;
+		arrLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		arrLayout[1].SemanticName = "COLOR";
+		arrLayout[1].SemanticIndex = 0;
 
-	// Vertex Shader
-	ID3D11PixelShader* trianglePSShader = nullptr;
+		jns::graphics::GetDevice()->CreateInputLayout(arrLayout, 2
+			, renderer::shader->GetVSCode()
+			, renderer::shader->GetInputLayoutAddressOf());
+	}
 
-	 void SetupState()
-	 {
+	void LoadBuffer()
+	{
+		// Vertex Buffer
+		renderer::mesh = new jns::Mesh();
+		renderer::mesh->CreateVertexBuffer(vertexes, ver_Num);
 
-	 }
+		std::vector<UINT> indexes;
+		for (UINT i = 0; i < ver_Num; ++i)
+		{
+			indexes.push_back(0);      // 중점
+			indexes.push_back(i + 1);  // 현재 세그먼트의 정점
+			indexes.push_back((i + 1) % ver_Num + 1);  // 다음 세그먼트의 정점
+		}
+		renderer::mesh->CreateIndexBuffer(indexes.data(), indexes.size());
 
-	 void LoadBuffer()
-	 {
-		 // Vertex Buffer
-		 mesh = new jns::Mesh();
-		 mesh->CreateVertexBuffer(vertexes, 4);
+		// Constant Buffer
+		constantBuffers.push_back(new ConstantBuffer(eCBType::Transform));
+		constantBuffers[0]->Create(sizeof(Vector4) * 2);
+		constantBuffers.push_back(new ConstantBuffer(eCBType::Color));
+		constantBuffers[1]->Create(sizeof(Vector4));
 
-		 std::vector<UINT> indexes = {};
-		 indexes.push_back(0);
-		 indexes.push_back(1);
-		 indexes.push_back(2);
+	}
 
-		 indexes.push_back(0);
-		 indexes.push_back(2);
-		 indexes.push_back(3);
-		 mesh->CreateIndexBuffer(indexes.data(), indexes.size());
+	void LoadShader()
+	{
+		renderer::shader = new jns::Shader();
+		renderer::shader->Create(eShaderStage::VS, L"TriangleVS.hlsl", "main");
+		renderer::shader->Create(eShaderStage::PS, L"TrianglePS.hlsl", "main");
+	}
 
-		 // Constant Buffer
-		 D3D11_BUFFER_DESC triangleCSDesc = {};
-		 triangleCSDesc.ByteWidth = sizeof(Vector4);
-		 triangleCSDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
-		 triangleCSDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
-		 triangleCSDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	void Initialize()
+	{
+		const float radius = 1.0f;  // 원의 반지름
 
-		 jns::graphics::GetDevice()->CreateBuffer(&triangleConstantBuffer, &triangleCSDesc, nullptr);
+		// 원의 정점 좌표 계산
+		float angleIncrement = (2.0f * 3.14159f) / ver_Num;
+		float currentAngle = 2.0f * 3.14159f;  // 시작 각도를 2 * PI로 설정하여 시계 방향으로 그리도록 함
 
-		 Vector4 pos(0.0f, 0.0f, 0.0f, 1.0f);
-		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &pos, sizeof(Vector4));
-		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
-		 //
-	 }
+		for (int i = 0; i < ver_Num; ++i)
+		{
+			float x = radius * cos(currentAngle);
+			float y = radius * sin(currentAngle);
 
-	 void LoadShader()
-	 {
-		 //jns::graphics::GetDevice()->CreateShader();
+			vertexes[i].pos = Vector3(x, y, 0.0f);
+			vertexes[i].color = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
-		 shader = new jns::Shader();
-		 shader->Create(eShaderStage::VS, L"TriangleVS.hlsl", "main");
-		 shader->Create(eShaderStage::PS, L"TrianglePS.hlsl", "main");
-	 }
+			currentAngle -= angleIncrement;  // 각도를 감소시켜 시계 방향으로 그림
+		}
 
-	 void Initialize()
-	 {
-		 mTrianglePos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-		 vertexes[0].pos = Vector3(0.0f, 0.5f, 0.0f);
-		 vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		LoadBuffer();
+		LoadShader();
+		SetupState();
+	}
 
-		 vertexes[1].pos = Vector3(0.5f, -0.5f, 0.0f);
-		 vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+	void Release()
+	{
 
-		 vertexes[2].pos = Vector3(-0.5f, -0.5f, 0.0f);
-		 vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-		 //vertexes[3].pos = Vector3(-0.8f, 0.8f, 0.5f);
-		 //vertexes[3].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[4].pos = Vector3(-0.5f, 0.8f, 0.5f);
-		 //vertexes[4].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-		 //vertexes[5].pos = Vector3(-0.5f, 0.5f, 0.5f);
-		 //vertexes[5].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-
-		 //vertexes[6].pos = Vector3(0.5f, 0.8f, 0.5f);
-		 //vertexes[6].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[7].pos = Vector3(0.8f, 0.5f, 0.5f);
-		 //vertexes[7].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-		 //vertexes[8].pos = Vector3(0.2f, 0.5f, 0.5f);
-		 //vertexes[8].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-		 //vertexes[9].pos = Vector3(0.8f, 0.5f, 0.5f);
-		 //vertexes[9].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-
-		 //vertexes[10].pos = Vector3(0.5f, 0.2f, 0.5f);
-		 //vertexes[10].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-		 //vertexes[11].pos = Vector3(0.2f, 0.5f, 0.5f);
-		 //vertexes[11].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-		 //float start_x =  0.0f;
-		 //float start_y =  0.3f;
-		 //float angle =  -5.0f;
-		 //float center_x = 0.0f;
-		 //float center_y = 0.0f;
-
-
-		 //Vector2 turnPos = Vector2(start_x, start_y);
-		 //for (int i = 12; i < 255;)
-		 //{
-			// vertexes[i].pos = Vector3(center_x, center_y, 0.5f);
-			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-			// i++;
-			// vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
-			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-			// Rotate(turnPos.x, turnPos.y, angle);
-
-			// i++;
-			// vertexes[i].pos = Vector3(turnPos.x, turnPos.y, 0.5f);
-			// vertexes[i].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-
-			// i++;
-		 //}
-
-
-		 SetupState();
-		 LoadBuffer();
-		 LoadShader();
-	 }
-
-	 void Release()
-	 {
-		 if (triangleLayout != nullptr)
-			 triangleLayout->Release();
-
-		 if (triangleConstantBuffer != nullptr)
-			 triangleConstantBuffer->Release();
-
-		 if (trianglePSShader != nullptr)
-			 trianglePSShader->Release();
-	 }
-
-	 void Update()
-	 {
-		 
-		 if(Input::GetKey(eKeyCode::LEFT))
-		 {
-			 mTrianglePos.x -= 0.1f * Time::DeltaTime();
-		 }
-		 else if (Input::GetKey(eKeyCode::RIGHT))
-		 {
-			 mTrianglePos.x += 0.1f * Time::DeltaTime();
-		 }
-		 else if (Input::GetKey(eKeyCode::DOWN))
-		 {
-			 mTrianglePos.y -= 0.1f * Time::DeltaTime();
-		 }
-		 else if (Input::GetKey(eKeyCode::UP))
-		 {
-			 mTrianglePos.y += 0.1f * Time::DeltaTime();
-		 }
-		 jns::graphics::GetDevice()->SetConstantBuffer(triangleConstantBuffer, &mTrianglePos, sizeof(Vector4));
-		 jns::graphics::GetDevice()->BindConstantBuffer(eShaderStage::VS, eCBType::Transform, triangleConstantBuffer);
-	 }
+	}
 }
+
+
 

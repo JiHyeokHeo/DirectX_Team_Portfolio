@@ -31,9 +31,12 @@ namespace jns::graphics
 
 		void BindViewPort(D3D11_VIEWPORT* viewPort);
 
+		void DrawIndexed(UINT IndexCount, UINT StartIndexLocation, INT BaseVertexLocation);
 		void Draw();
-	private:
+		void Present();
 
+
+	private:
 		Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> mContext;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> mRenderTarget;

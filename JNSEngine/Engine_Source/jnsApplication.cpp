@@ -1,8 +1,6 @@
 #include "jnsApplication.h"
 #include "jnsInput.h"
 #include "jnsTime.h"
-#include "jnsRenderer.h"
-
 
 namespace jns
 {
@@ -31,25 +29,33 @@ namespace jns
 	{
 		Time::Initialize();
 		Input::Initialize();
-		renderer::Initialize();
+
+		mScene = new Scene();
+		mScene->Initialize();
 	}
+
 	void Application::Update()
 	{
-		//int a = 0;
 		Time::Update();
 		Input::Update();
-		renderer::Update();
+
+		mScene->Update();
 	}
+
 	void Application::LateUpdate()
 	{
 
 	}
+
 	void Application::Render()
 	{
 		Time::Render();
 
 		graphicDevice->Draw();
+		mScene->Render();
+		graphicDevice->Present();
 	}
+
 	void Application::SetWindow(HWND hwnd, UINT width, UINT height)
 	{
 		if (graphicDevice == nullptr)
@@ -68,5 +74,4 @@ namespace jns
 		ShowWindow(mHwnd, true);
 		UpdateWindow(mHwnd);
 	}
-
 }

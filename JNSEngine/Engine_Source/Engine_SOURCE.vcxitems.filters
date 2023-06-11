@@ -31,6 +31,21 @@
     <Filter Include="Graphics\Renderer">
       <UniqueIdentifier>{0e900890-53a4-49ab-a49f-ef5e855d6309}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{890e6588-5cf0-4a8e-bf55-94ae3d1ec785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Component">
+      <UniqueIdentifier>{9a2e05b1-2176-4f1f-99b9-e9b34ef985f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Component\Script">
+      <UniqueIdentifier>{e2e68040-3f95-4f07-b77a-22a799c10daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{ffd05c30-d9f6-4449-b774-f2c419a8cb41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Layer">
+      <UniqueIdentifier>{8e087c01-e5fd-4805-bbbe-8f3b05db8673}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -81,6 +96,24 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsConstantBuffer.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsGameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsComponent.h">
+      <Filter>GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsScript.h">
+      <Filter>GameObject\Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsSceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)jnsLayer.h">
+      <Filter>Scene\Layer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp">
@@ -118,6 +151,24 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsConstantBuffer.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsGameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsComponent.cpp">
+      <Filter>GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsScript.cpp">
+      <Filter>GameObject\Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsSceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)jnsLayer.cpp">
+      <Filter>Scene\Layer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

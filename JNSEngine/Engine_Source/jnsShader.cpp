@@ -6,9 +6,18 @@ namespace jns
 		: mInputLayout(nullptr)
 		, mTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 	{
+		mVSBlob = nullptr;
+		mHSBlob = nullptr;
+		mDSBlob = nullptr;
+		mGSBlob = nullptr;
+		mPSBlob = nullptr;
 
+		mVS = nullptr;
+		mHS = nullptr;
+		mDS = nullptr;
+		mGS = nullptr;
+		mPS = nullptr;
 	}
-
 	Shader::~Shader()
 	{
 		mInputLayout->Release();
@@ -42,10 +51,12 @@ namespace jns
 				, mPSBlob->GetBufferSize(), mPS.GetAddressOf());
 		}
 
-		return true;;
+		return true;
 	}
 	void Shader::Binds()
 	{
+		GetDevice()->BindInputLayout(mInputLayout);
+		GetDevice()->BindPrimitiveTopology(mTopology);
 		GetDevice()->BindVertexShader(mVS.Get());
 		GetDevice()->BindPixelShader(mPS.Get());
 	}

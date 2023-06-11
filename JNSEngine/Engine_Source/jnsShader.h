@@ -21,7 +21,7 @@ namespace jns
 		{
 			return mVSBlob.Get();
 		}
-
+	
 		ID3D11InputLayout* GetInputLayout()
 		{
 			return mInputLayout;
@@ -36,8 +36,8 @@ namespace jns
 		ID3D11InputLayout* mInputLayout;
 		D3D11_PRIMITIVE_TOPOLOGY mTopology;
 
-		Microsoft::WRL::ComPtr<ID3DBlob> mVSBlob;
 		Microsoft::WRL::ComPtr<ID3DBlob> mHSBlob;
+		Microsoft::WRL::ComPtr<ID3DBlob> mVSBlob;
 		Microsoft::WRL::ComPtr<ID3DBlob> mDSBlob;
 		Microsoft::WRL::ComPtr<ID3DBlob> mGSBlob;
 		Microsoft::WRL::ComPtr<ID3DBlob> mPSBlob;
