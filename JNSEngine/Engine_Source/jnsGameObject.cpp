@@ -2,7 +2,7 @@
 #include "jnsRenderer.h"
 #include "jnsGraphicDevice_Dx11.h"
 #include "jnsInput.h"
-#include <random>
+#include "jnsTime.h"
 
 namespace jns
 {
@@ -10,6 +10,7 @@ namespace jns
 		: mState(eState::Active),
 		radius(20.0f)
 	{
+		randDir = 0;
 	}
 
 	GameObject::~GameObject()
@@ -32,9 +33,9 @@ namespace jns
 				Move();
 			}
 			break;
-			case(GameObject::Type::Cell):
+			case(GameObject::Type::Enemy):
 			{
-
+				Roam();
 			}
 			break;
 		}
@@ -42,23 +43,70 @@ namespace jns
 		Pos = Vector2(startX + moveX, startY + moveY);
 	}
 
+	void GameObject::Roam()
+	{
+		if (Pos.x < -750 || Pos.x > 750 || Pos.y < - 400 || Pos.y > 400)
+		{
+			randDir = rand() % 8;
+		}
+
+		switch (randDir)
+		{
+			case 0:
+			{
+				moveY -= 70.0f * Time::DeltaTime();
+			} break;
+			case 1:
+			{
+				moveY += 50.0f * Time::DeltaTime();
+				moveX -= 50.0f * Time::DeltaTime();
+			} break;
+			case 2:
+			{
+				moveY += 70.0f * Time::DeltaTime();
+			} break;
+			case 3:
+			{
+				moveY -= 50.0f * Time::DeltaTime();
+				moveX -= 50.0f * Time::DeltaTime();
+			} break;
+			case 4:
+			{
+				moveX += 70.0f * Time::DeltaTime();
+			} break;
+			case 5:
+			{
+				moveY += 50.0f * Time::DeltaTime();
+				moveX += 50.0f * Time::DeltaTime();
+			} break;
+			case 6:
+			{
+				moveX -= 70.0f * Time::DeltaTime();
+			} break;
+			case 7:
+			{
+				moveY -= 50.0f * Time::DeltaTime();
+				moveX += 50.0f * Time::DeltaTime();
+			} break;
+		}
+	}
 	void GameObject::Move()
 	{
 		if (Input::GetKey(eKeyCode::W))
 		{
-			moveY += 1.5f;
+			moveY += 200.0f * Time::DeltaTime();
 		}
 		if (Input::GetKey(eKeyCode::D))
 		{
-			moveX += 1.5f;
+			moveX += 200.0f * Time::DeltaTime();
 		}
 		if (Input::GetKey(eKeyCode::A))
 		{
-			moveX -= 1.5f;
+			moveX -= 200.0f * Time::DeltaTime();
 		}
 		if (Input::GetKey(eKeyCode::S))
 		{
-			moveY -= 1.5f;
+			moveY -= 200.0f * Time::DeltaTime();
 		}
 	}
 	void GameObject::LateUpdate()

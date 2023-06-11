@@ -23,6 +23,7 @@ namespace jns
 		enum Type
 		{
 			Player,
+			Enemy,
 			Cell,
 			None,
 		};
@@ -43,6 +44,7 @@ namespace jns
 		virtual void LateUpdate();
 		virtual void Render();
 		void Move();
+		void Roam();
 
 		Type G_Type;
 
@@ -65,18 +67,9 @@ namespace jns
 		{
 			radius = r;
 		}
-		void Radius_up(float r)
-		{
-			radius += r;
-		}
 		Vector2 get_Pos()
 		{
 			return Pos;
-		}
-
-		float get_Radius()
-		{
-			return radius;
 		}
 
 		void set_Color(float a, float b, float c)
@@ -86,6 +79,7 @@ namespace jns
 			color3 = c;
 		}
 
+		float radius;
 	private:
 		eState mState;
 		//std::vector<Component*> mComponents;
@@ -100,8 +94,9 @@ namespace jns
 		float color2;
 		float color3;
 
-		float radius;
-
 		Vector2 Pos;
+
+		int randDir;
+
 	};
 }

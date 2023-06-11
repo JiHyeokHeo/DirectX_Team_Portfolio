@@ -39,9 +39,9 @@ namespace jns
 			float random_X = dis1(gen);
 			float random_Y = dis2(gen);
 
-			float color1 = dis3(gen);
-			float color2 = dis3(gen);
-			float color3 = dis3(gen);
+			color1 = dis3(gen);
+			color2 = dis3(gen);
+			color3 = dis3(gen);
 
 			GameObject* object = new GameObject();
 			object->setType(GameObject::Type::Cell);
@@ -59,7 +59,7 @@ namespace jns
 		std::vector<GameObject>::iterator it;
 		for (auto it = mGameObjects.begin(); it != mGameObjects.end();)
 		{
-			if ((*it)->get_Radius() == 0)
+			if ((*it)->radius == 0)
 			{
 				delete* it;
 				it = mGameObjects.erase(it);
@@ -75,9 +75,16 @@ namespace jns
 		player = new GameObject();
 		player->set_Init_Pos(300.0f, -550.0f);
 		player->set_Radius(50.0f);
+		player->set_Color(1.0, 1.0, 1.0);
 		player->setType(GameObject::Type::Player);
 		player->Initialize();
-		
+
+		enemy = new GameObject();
+		enemy->set_Init_Pos(-300.0f, 550.0f);
+		enemy->set_Radius(50.0f);
+		enemy->setType(GameObject::Type::Enemy);
+		enemy->Initialize();
+
 		Instantiate_Cell(80);
 	}
 
@@ -99,24 +106,52 @@ namespace jns
 		}
 
 		player->Update();
+		enemy->Update();
+
 		Vector2 pPos = player->get_Pos();
-		float pRadius = player->get_Radius();
+		Vector2 ePos = enemy->get_Pos();
+
+		float pRadius = player->radius;
+		float eRadius = enemy->radius;
 
 		for (GameObject* gameObj : mGameObjects)
 		{
 			gameObj->Update();
 
 			Vector2 oPos = gameObj->get_Pos();
-			float oRadius = gameObj->get_Radius();
+			float oRadius = gameObj->radius;
 
 			if (distance(pPos, oPos) < (pRadius + oRadius))
 			{
-				if (gameObj->get_Radius() != 0)
+				if (gameObj->radius != 0)
 				{
 					gameObj->set_Radius(0);
 					cell_num -= 1;
 					death++;
-					player->Radius_up(1.5f);
+					player->radius+= 1.5f;
+				}
+			}
+			if (distance(pPos, ePos) < (pRadius + eRadius))
+			{
+				if (pRadius >= eRadius)
+				{
+					player->radius += 0.0003f;
+					enemy->radius -= 0.0003f;
+				}
+				else
+				{
+					player->radius -= 0.0003f;
+					enemy->radius += 0.0003f;
+				}
+			}
+			if (distance(ePos, oPos) < (eRadius + oRadius))
+			{
+				if (gameObj->radius != 0)
+				{
+					gameObj->set_Radius(0);
+					cell_num -= 1;
+					death++;
+					enemy->radius += 2.0f;
 				}
 			}
 		}
@@ -129,6 +164,7 @@ namespace jns
 
 	void Scene::Render()
 	{
+		enemy->Render();
 		player->Render();
 
 		for (GameObject* gameObj : mGameObjects)

@@ -27,7 +27,13 @@ namespace jns
 		int death = 0;
 
 		GameObject* player;
+		GameObject* enemy;
+
 		int cell_num;
 		float playTime;
+
+		float color1;
+		float color2;
+		float color3;
 	};
 }
