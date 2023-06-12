@@ -50,13 +50,17 @@ namespace jns
 		void PipeLineRender();
 		bool CheckTime();
 		void CheckPauseTime();
+		void SetScaleAndPostion();
 
 	private:
 		eState mState;
 		mGameObjectStatus mStatus;
 		Vector3 mRGB;
-		bool isCollider;
 		float mTime;
+		
+		
+		bool isCollider;
+		bool isChanged;
 		//std::vector<Component*> mComponents;
 	};
 

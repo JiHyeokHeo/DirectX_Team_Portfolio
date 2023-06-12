@@ -28,7 +28,7 @@ namespace jns
 	
 		if (GetIsCol() == true)
 		{
-			mScale += 10.0f;
+			mScale += 1.0f;
 			SetScale(mScale);
 			SetIsCol(false);
 		}

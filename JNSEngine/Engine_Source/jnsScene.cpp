@@ -20,16 +20,24 @@ namespace jns
 		Player* mPlayer = new Player();
 		mGameObjects.push_back(mPlayer);
 
-		/*for (int i = 0; i < 100; i++)
-		{*/
+		for (int i = 0; i < 40; i++)
+		{
 			Monster* mMonster = new Monster();
 			mGameObjects.push_back(mMonster);
-		/*}*/
+		}
 		
 		FindTarget(mPlayer);
 	}
 	void Scene::Update()
 	{
+
+
+		CollisionCheck(mTarget);
+		for (GameObject* gameObj : mGameObjects)
+		{
+			gameObj->Update();
+		}
+
 
 		for (GameObject* gameObj : mGameObjects)
 		{
@@ -37,12 +45,6 @@ namespace jns
 			{
 				gameObj->SetState(GameObject::Active);
 			}
-		}
-
-		CollisionCheck(mTarget);
-		for (GameObject* gameObj : mGameObjects)
-		{
-			gameObj->Update();
 		}
 	}
 	void Scene::LateUpdate()

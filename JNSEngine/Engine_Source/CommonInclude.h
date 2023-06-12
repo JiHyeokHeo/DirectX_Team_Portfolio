@@ -90,3 +90,4 @@ std::uniform_real_distribution<> disY(-420.0f, 420.0f);
 std::uniform_real_distribution<> rangecolorR(0.0f, 1.0f);
 std::uniform_real_distribution<> rangecolorG(0.0f, 1.0f);
 std::uniform_real_distribution<> rangecolorB(0.0f, 1.0f);
+std::uniform_real_distribution<> rangeScale(10.0f, 30.0f);

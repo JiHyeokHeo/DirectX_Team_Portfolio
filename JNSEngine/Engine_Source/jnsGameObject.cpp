@@ -59,10 +59,16 @@ namespace jns
 	{
 		if (mTime >= 3.0f)
 		{
+			isChanged = false;
 			mTime = 0;
 			return false;
 		}
 
+		if (this->GetState() == GameObject::Paused && mTime < 3.0f && isChanged == false)
+		{
+			SetScaleAndPostion();
+			return true;
+		}
 
 		if (this->GetState() == GameObject::Paused)
 		{
@@ -76,5 +82,23 @@ namespace jns
 	{
 		mTime += Time::DeltaTime();
 
+	}
+	void GameObject::SetScaleAndPostion()
+	{
+		Vector2 mPos = {};
+		mPos.x = disX(gen);
+		mPos.y = disY(gen);
+
+		mRGB.x = rangecolorR(gen);
+		mRGB.y = rangecolorG(gen);
+		mRGB.z = rangecolorB(gen);
+		
+		float mScale = rangeScale(gen);
+
+		SetRGB(mRGB);
+		SetPos(mPos);
+		SetScale(mScale);
+		
+		isChanged = true;
 	}
 }
