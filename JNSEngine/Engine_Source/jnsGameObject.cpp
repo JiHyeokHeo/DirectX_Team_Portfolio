@@ -47,14 +47,19 @@ namespace jns
 	{
 		if (Pos.x < -750 || Pos.x > 750 || Pos.y < - 400 || Pos.y > 400)
 		{
+			Pos = prevPos;
 			randDir = rand() % 8;
+		}
+		else
+		{
+			prevPos = Pos;
 		}
 
 		switch (randDir)
 		{
 			case 0:
 			{
-				moveY -= 70.0f * Time::DeltaTime();
+				moveY -= 75.0f * Time::DeltaTime();
 			} break;
 			case 1:
 			{
@@ -63,7 +68,7 @@ namespace jns
 			} break;
 			case 2:
 			{
-				moveY += 70.0f * Time::DeltaTime();
+				moveY += 75.0f * Time::DeltaTime();
 			} break;
 			case 3:
 			{
@@ -72,7 +77,7 @@ namespace jns
 			} break;
 			case 4:
 			{
-				moveX += 70.0f * Time::DeltaTime();
+				moveX += 75.0f * Time::DeltaTime();
 			} break;
 			case 5:
 			{
@@ -81,7 +86,7 @@ namespace jns
 			} break;
 			case 6:
 			{
-				moveX -= 70.0f * Time::DeltaTime();
+				moveX -= 75.0f * Time::DeltaTime();
 			} break;
 			case 7:
 			{

@@ -57,7 +57,6 @@ namespace renderer
 		constantBuffers[0]->Create(sizeof(Vector4) * 2);
 		constantBuffers.push_back(new ConstantBuffer(eCBType::Color));
 		constantBuffers[1]->Create(sizeof(Vector4));
-
 	}
 
 	void LoadShader()

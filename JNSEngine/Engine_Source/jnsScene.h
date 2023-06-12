@@ -24,11 +24,10 @@ namespace jns
 	private:
 		std::vector<GameObject*> mGameObjects;
 
-		int death = 0;
-
 		GameObject* player;
 		GameObject* enemy;
 
+		int dead_cell = 0; // 죽은 세포 체크
 		int cell_num;
 		float playTime;
 

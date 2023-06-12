@@ -3,19 +3,18 @@
 #include "jnsTime.h"
 #include <random>
 
+//랜덤 실수 생성
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_real_distribution<float> dis1(-750.f, 750.f);
 std::uniform_real_distribution<float> dis2(-420.f, 420.f);
 std::uniform_real_distribution<float> dis3(0.f, 1.f);
 
-
 namespace jns
 {
 	Scene::Scene()
 	{
 		playTime = 0.0f;
-
 		cell_num = 0;
 	}
 	Scene::~Scene()
@@ -26,12 +25,14 @@ namespace jns
 		}
 	}
 
+	//세포들 간의 거리 측정
 	float Scene::distance(const Vector2& a, const Vector2& b) {
 		float dx = a.x - b.x;
 		float dy = a.y - b.y;
 		return std::sqrt(dx * dx + dy * dy);
 	}
 
+	//세포 생성
 	void Scene::Instantiate_Cell(int n)
 	{
 		for (int i = 0; i < n; i++)
@@ -54,6 +55,8 @@ namespace jns
 			cell_num += 1;
 		}
 	}
+
+	//죽은 세포 배열에서 삭제, 동적 해제
 	void Scene::Destroy()
 	{
 		std::vector<GameObject>::iterator it;
@@ -70,6 +73,7 @@ namespace jns
 			}
 		}
 	}
+
 	void Scene::Initialize()
 	{
 		player = new GameObject();
@@ -90,14 +94,16 @@ namespace jns
 
 	void Scene::Update()
 	{
-		if (death > 50)
+		//죽은 세포가 50마리 쌓이면 Destroy
+		if (dead_cell > 50)
 		{
 			Destroy();
-			death = 0;
+			dead_cell = 0;
 		}
 
 		playTime += Time::DeltaTime();
 
+		//6마다 생성
 		if (playTime >= 6.0f && cell_num <= 150)
 		{
 			Instantiate_Cell(20);
@@ -127,7 +133,7 @@ namespace jns
 				{
 					gameObj->set_Radius(0);
 					cell_num -= 1;
-					death++;
+					dead_cell++;
 					player->radius+= 1.5f;
 				}
 			}
@@ -135,13 +141,13 @@ namespace jns
 			{
 				if (pRadius >= eRadius)
 				{
-					player->radius += 0.0003f;
-					enemy->radius -= 0.0003f;
+					player->radius += 0.0005f;
+					enemy->radius -= 0.0005f;
 				}
 				else
 				{
-					player->radius -= 0.0003f;
-					enemy->radius += 0.0003f;
+					player->radius -= 0.0005f;
+					enemy->radius += 0.0005f;
 				}
 			}
 			if (distance(ePos, oPos) < (eRadius + oRadius))
@@ -150,7 +156,7 @@ namespace jns
 				{
 					gameObj->set_Radius(0);
 					cell_num -= 1;
-					death++;
+					dead_cell++;
 					enemy->radius += 2.0f;
 				}
 			}

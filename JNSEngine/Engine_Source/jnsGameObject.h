@@ -95,8 +95,8 @@ namespace jns
 		float color3;
 
 		Vector2 Pos;
+		Vector2 prevPos;
 
 		int randDir;
-
 	};
 }
