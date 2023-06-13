@@ -31,13 +31,11 @@ namespace jns
 	void Scene::Update()
 	{
 
-
 		CollisionCheck(mTarget);
 		for (GameObject* gameObj : mGameObjects)
 		{
 			gameObj->Update();
 		}
-
 
 		for (GameObject* gameObj : mGameObjects)
 		{

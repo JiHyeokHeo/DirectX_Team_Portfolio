@@ -9,6 +9,7 @@ namespace jns
 	GameObject::GameObject()
 		:mState(GameObject::Active)
 		,mTime(0.0f)
+		,isChanged(false)
 	{
 	}
 	GameObject::~GameObject()
