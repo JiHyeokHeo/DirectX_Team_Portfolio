@@ -3,6 +3,7 @@
 #include "jnsGraphicDevice_Dx11.h"
 #include "jnsTime.h"
 #include "jnsInput.h"
+#include "rapidcsv.h"
 
 namespace jns
 {
@@ -11,12 +12,19 @@ namespace jns
 		,mTime(0.0f)
 		,isChanged(false)
 	{
+		rapidcsv::Document doc("..\\test.csv", rapidcsv::LabelParams(0, 0));
+		std::vector<float> close = doc.GetRow<float>("2017-02-22");
+		std::cout << "Read " << close.size() << " values." << std::endl;
+
+		long long volume = doc.GetCell<long long>("Volume", "2017-02-22");
+		std::cout << "Volume " << volume << " on 2017-02-22." << std::endl;
 	}
 	GameObject::~GameObject()
 	{
 	}
 	void GameObject::Initialize()
 	{
+		rapidcsv::Document doc("examples/colrowhdr.csv", rapidcsv::LabelParams(0, 0));
 	}
 	void GameObject::Update()
 	{

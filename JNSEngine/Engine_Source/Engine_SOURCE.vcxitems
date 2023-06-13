@@ -37,6 +37,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsTime.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)rapidcsv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsApplication.cpp" />
