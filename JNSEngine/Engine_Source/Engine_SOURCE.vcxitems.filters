@@ -114,6 +114,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)jnsMonster.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)rapidcsv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)jnsMath.cpp">
